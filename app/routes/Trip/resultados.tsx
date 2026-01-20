@@ -1,6 +1,6 @@
 import { useNavigate, useLoaderData, useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
-import { resultadosLoader, processTrips, parseTypes } from "@lib/trip";
+import { resultadosLoader, parseTypes } from "@lib/trip";
 import type { SortKey, SlotFilter } from "@lib/trip";
 import type { Route } from "./+types/resultados";
 export const loader = resultadosLoader;
@@ -17,6 +17,7 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export default function Resultados() {
+
   const navigate = useNavigate();
   const { trips } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,24 +30,15 @@ export default function Resultados() {
   const slot = (searchParams.get("slot") as SlotFilter) ?? undefined;
   const typesParam = searchParams.get("types") ?? "";
   const fechaParam = searchParams.get("fecha") ?? formatISODate(new Date());
-
   const initialBusTypes = parseTypes(typesParam);
-
   const [busTypes, setBusTypes] = useState<number[]>(initialBusTypes); // 1: Ejecutivo, 2: Buscama, 3: Semi-cama
+  const [displayTrips, setDisplayTrips] = useState(trips);
+  const today = startOfDay(new Date());
+  const selectedDate = startOfDay(parseISODateLocal(fechaParam));
+  const selectedISO = formatISODate(selectedDate);
+  const windowDates: Date[] = [addDays(selectedDate, -2), addDays(selectedDate, -1), selectedDate, addDays(selectedDate, 1)];
 
-  const [displayTrips, setDisplayTrips] = useState(() =>
-    processTrips({
-      origen,
-      destino,
-      minUsd: Number(minUsd),
-      maxUsd: Number(maxUsd),
-      slot,
-      sort,
-      busTypes: initialBusTypes,
-    })
-  );
-
-  function setTypesInUrl(nextTypes: number[]) {
+  const setTypesInUrl = (nextTypes: number[]) => {
     const next = new URLSearchParams(searchParams);
     if (nextTypes.length > 0) {
       next.set("types", nextTypes.join(","));
@@ -97,10 +89,6 @@ export default function Resultados() {
     return new Date(y, (m || 1) - 1, d || 1);
   }
 
-  const today = startOfDay(new Date());
-  const selectedDate = startOfDay(parseISODateLocal(fechaParam));
-  const selectedISO = formatISODate(selectedDate);
-
   function setSelectedDate(next: Date) {
     const clamped = startOfDay(next) < today ? today : startOfDay(next);
     updateParam("fecha", formatISODate(clamped));
@@ -114,8 +102,6 @@ export default function Resultados() {
   function nextDay() {
     setSelectedDate(addDays(selectedDate, 1));
   }
-
-  const windowDates: Date[] = [addDays(selectedDate, -2), addDays(selectedDate, -1), selectedDate, addDays(selectedDate, 1)];
 
   function formatShort(d: Date) {
     const dow = new Intl.DateTimeFormat("es-VE", { weekday: "short" }).format(d).replace(".", "");
@@ -159,34 +145,17 @@ export default function Resultados() {
   }
 
   useEffect(() => {
-    const t = setTimeout(async () => {
-      const nextTypes = parseTypes(typesParam);
-      let typesToUse = busTypes;
-      if (
-        nextTypes.length !== busTypes.length ||
-        nextTypes.some((n) => !busTypes.includes(n))
-      ) {
-        setBusTypes(nextTypes);
-        typesToUse = nextTypes;
-      }
-
-      const minN = minUsd ? Number(minUsd) : 0;
-      const maxN = maxUsd ? Number(maxUsd) : undefined;
-      const processed = processTrips({
-        origen,
-        destino,
-        minUsd: minN,
-        maxUsd: maxN,
-        slot,
-        sort,
-        busTypes: typesToUse,
-      });
-      setDisplayTrips(processed);
-    }, 250);
-    return () => {
-      clearTimeout(t);
-    };
-  }, [minUsd, maxUsd, origen, destino, slot, sort, busTypes, typesParam, fechaParam]);
+    // Actualiza la lista renderizada desde los datos del loader (SSR consistente)
+    setDisplayTrips(trips);
+    // Mantiene tipos locales sincronizados si cambian externamente en la URL
+    const nextTypes = parseTypes(typesParam);
+    if (
+      nextTypes.length !== busTypes.length ||
+      nextTypes.some((n) => !busTypes.includes(n))
+    ) {
+      setBusTypes(nextTypes);
+    }
+  }, [trips, typesParam]);
 
   return (
     <main className="max-w-[1200px] mx-auto px-6 py-8 min-h-screen bg-slate-50 dark:bg-background-dark text-[#111618] dark:text-white">

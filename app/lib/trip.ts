@@ -245,9 +245,17 @@ export function processTrips({
     const byPrice = filterTripsByPrice(sourceTrips, minUsd, maxUsd);
     const bySlot = filterTripsBySlot(byPrice, slot);
     const byType = filterTripsByBusType(bySlot, busTypes);
+
     return sortTrips(byType, sort);
 }
 
+
+function formatDateEs(iso?: string) {
+    if (!iso) return undefined;
+    const [y, m, d] = iso.split("-").map(Number);
+    const dt = new Date(y, (m || 1) - 1, d || 1);
+    return new Intl.DateTimeFormat("es-VE", { weekday: "long", day: "numeric", month: "long" }).format(dt);
+}
 
 export async function resultadosLoader({ request }: { request: Request }) {
     const url = new URL(request.url);
@@ -258,6 +266,7 @@ export async function resultadosLoader({ request }: { request: Request }) {
     const slot = (url.searchParams.get("slot") as SlotFilter) ?? undefined;
     const sort = (url.searchParams.get("sort") as SortKey) ?? "barato";
     const types = parseTypes(url.searchParams.get("types") ?? "");
+    const fechaISO = url.searchParams.get("fecha") ?? new Date().toISOString().slice(0, 10);
     const defaultMin = 10;
     const defaultMax = 100;
 
@@ -271,11 +280,10 @@ export async function resultadosLoader({ request }: { request: Request }) {
     const buildMeta = (trips: Trip[], meta?: MetaShape) => ({
         title: meta?.title ?? `VeneBus | ${origen} a ${destino}`,
         description:
-            meta?.description ?? `Encuentra ${trips.length} opciones para viajar de ${origen} a ${destino}.`,
+            meta?.description ?? `Encuentra ${trips.length} opciones para viajar de ${origen} a ${destino}${fechaISO ? ` para el ${formatDateEs(fechaISO)}` : ""}.`,
     });
 
     const processed = processTrips({ origen, destino, minUsd, maxUsd, slot, sort, busTypes: types });
-
     return { trips: processed, meta: buildMeta(processed) };
 
 }
