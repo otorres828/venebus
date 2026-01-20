@@ -148,3 +148,31 @@ export default function Login() {
         </main>
     );
 }
+
+export function HydrateFallback() {
+  return (
+    <main className="max-w-[1280px] mx-auto px-6 py-8 animate-pulse">
+      <section className="relative mb-12 rounded-3xl overflow-hidden min-h-[220px] bg-slate-200 dark:bg-slate-700" />
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+        <div className="h-6 w-48 rounded bg-slate-200 dark:bg-slate-700" />
+        <div className="flex items-center gap-2">
+          <div className="h-10 w-24 rounded bg-slate-200 dark:bg-slate-700" />
+          <div className="h-10 w-24 rounded bg-slate-200 dark:bg-slate-700" />
+          <div className="h-10 w-24 rounded bg-slate-200 dark:bg-slate-700" />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-700">
+            <div className="h-56 bg-slate-200 dark:bg-slate-700" />
+            <div className="p-6 space-y-3">
+              <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded" />
+              <div className="h-6 w-64 bg-slate-200 dark:bg-slate-700 rounded" />
+              <div className="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded-xl mt-4" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </main>
+  );
+}

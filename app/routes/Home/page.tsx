@@ -10,10 +10,10 @@ export function meta(_: Route.MetaArgs) {
   ];
 }
 
-export const loader = homeLoader;
+export const clientLoader  = homeLoader;
 
 export default function Home() {
-  const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof clientLoader >();
   return (
     <main className="bg-slate-50 text-slate-900">
 
