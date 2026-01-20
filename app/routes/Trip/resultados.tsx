@@ -28,6 +28,7 @@ export default function Resultados() {
   const sort = (searchParams.get("sort") as SortKey) ?? "barato";
   const slot = (searchParams.get("slot") as SlotFilter) ?? undefined;
   const typesParam = searchParams.get("types") ?? "";
+  const fechaParam = searchParams.get("fecha") ?? formatISODate(new Date());
 
   const initialBusTypes = parseTypes(typesParam);
 
@@ -72,6 +73,62 @@ export default function Resultados() {
       next.delete(name);
     }
     setSearchParams(next, { replace: true });
+  }
+
+  function formatISODate(d: Date) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function startOfDay(d: Date) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  function addDays(base: Date, days: number) {
+    const d = new Date(base);
+    d.setDate(d.getDate() + days);
+    return d;
+  }
+
+  function parseISODateLocal(iso: string) {
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, (m || 1) - 1, d || 1);
+  }
+
+  const today = startOfDay(new Date());
+  const selectedDate = startOfDay(parseISODateLocal(fechaParam));
+  const selectedISO = formatISODate(selectedDate);
+
+  function setSelectedDate(next: Date) {
+    const clamped = startOfDay(next) < today ? today : startOfDay(next);
+    updateParam("fecha", formatISODate(clamped));
+  }
+
+  function prevDay() {
+    const next = addDays(selectedDate, -1);
+    if (next >= today) setSelectedDate(next);
+  }
+
+  function nextDay() {
+    setSelectedDate(addDays(selectedDate, 1));
+  }
+
+  const windowDates: Date[] = [addDays(selectedDate, -2), addDays(selectedDate, -1), selectedDate, addDays(selectedDate, 1)];
+
+  function formatShort(d: Date) {
+    const dow = new Intl.DateTimeFormat("es-VE", { weekday: "short" }).format(d).replace(".", "");
+    const day = String(d.getDate()).padStart(2, "0");
+    const monthShort = new Intl.DateTimeFormat("es-VE", { month: "short" }).format(d).replace(".", "");
+    return `${dow}, ${day}/${monthShort}`;
+  }
+
+  function formatLong(d: Date) {
+    const dow = new Intl.DateTimeFormat("es-VE", { weekday: "long" }).format(d);
+    const day = d.getDate();
+    const monthLong = new Intl.DateTimeFormat("es-VE", { month: "long" }).format(d);
+    return `${dow}, ${day} de ${monthLong}`;
   }
 
   function handlePriceChange(name: "minUsd" | "maxUsd", value: string) {
@@ -129,7 +186,7 @@ export default function Resultados() {
     return () => {
       clearTimeout(t);
     };
-  }, [minUsd, maxUsd, origen, destino, slot, sort, busTypes, typesParam]);
+  }, [minUsd, maxUsd, origen, destino, slot, sort, busTypes, typesParam, fechaParam]);
 
   return (
     <main className="max-w-[1200px] mx-auto px-6 py-8 min-h-screen bg-slate-50 dark:bg-background-dark text-[#111618] dark:text-white">
@@ -275,7 +332,46 @@ export default function Resultados() {
           </div>
         </aside>
 
+        {/* Parte Derecha */}
         <div className="flex-1 space-y-6">
+          <div className="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-2xl p-2 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={prevDay}
+              className={`size-10 rounded-xl flex items-center justify-center border ${selectedDate <= today ? "cursor-not-allowed text-gray-400 border-gray-200 dark:border-gray-800" : "hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"}`}
+              disabled={selectedDate <= today}
+              aria-label="Día anterior"
+            >
+              <span className="material-symbols-outlined">chevron_left</span>
+            </button>
+            <div className="flex-1 flex items-center justify-center gap-2">
+              {windowDates.map((d) => {
+                const iso = formatISODate(d);
+                const isSelected = iso === selectedISO;
+                const isPast = startOfDay(d) < today;
+                return (
+                  <button
+                    key={iso}
+                    type="button"
+                    onClick={() => !isPast && setSelectedDate(d)}
+                    className={`flex-1 sm:flex-none px-4 py-3 rounded-xl border text-center transition-all ${isSelected ? "bg-primary text-white border-primary" : "bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"} ${isPast && !isSelected ? "opacity-50 cursor-not-allowed" : ""}`}
+                    aria-pressed={isSelected}
+                  >
+                    <strong className="sm:hidden text-sm">{formatShort(d)}</strong>
+                    <strong className="hidden sm:block text-sm">{formatLong(d)}</strong>
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              onClick={nextDay}
+              className="size-10 rounded-xl flex items-center justify-center border hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"
+              aria-label="Día siguiente"
+            >
+              <span className="material-symbols-outlined">chevron_right</span>
+            </button>
+          </div>
           <div className="flex items-center justify-between bg-white dark:bg-background-dark p-2 rounded-xl  dark:border-gray-800 shadow-sm text-gray-700 dark:text-gray-200">
             <div className="flex gap-1">
               <button
