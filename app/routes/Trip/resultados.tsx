@@ -19,7 +19,7 @@ export function meta({ data }: Route.MetaArgs) {
 export default function Resultados() {
 
   const navigate = useNavigate();
-  const { trips, fecha: loaderFecha } = useLoaderData<typeof loader>();
+  const { trips, fecha: loaderFecha, today: loaderToday } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const origen = searchParams.get("origen") ?? "Caracas";
@@ -33,7 +33,7 @@ export default function Resultados() {
   const initialBusTypes = parseTypes(typesParam);
   const [busTypes, setBusTypes] = useState<number[]>(initialBusTypes); // 1: Ejecutivo, 2: Buscama, 3: Semi-cama
   const [displayTrips, setDisplayTrips] = useState(trips);
-  const today = startOfDay(new Date());
+  const today = startOfDay(parseISODateLocal(loaderToday));
   const selectedDate = startOfDay(parseISODateLocal(fechaParam));
   const selectedISO = formatISODate(selectedDate);
   const windowDates: Date[] = [addDays(selectedDate, -2), addDays(selectedDate, -1), selectedDate, addDays(selectedDate, 1)];

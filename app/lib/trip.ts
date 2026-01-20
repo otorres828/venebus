@@ -266,7 +266,9 @@ export async function resultadosLoader({ request }: { request: Request }) {
     const slot = (url.searchParams.get("slot") as SlotFilter) ?? undefined;
     const sort = (url.searchParams.get("sort") as SortKey) ?? "barato";
     const types = parseTypes(url.searchParams.get("types") ?? "");
-    const fechaISO = url.searchParams.get("fecha") ?? new Date().toISOString().slice(0, 10);
+    const now = new Date();
+    const todayISO = now.toISOString().slice(0, 10);
+    const fechaISO = url.searchParams.get("fecha") ?? todayISO;
     const defaultMin = 10;
     const defaultMax = 100;
 
@@ -284,6 +286,6 @@ export async function resultadosLoader({ request }: { request: Request }) {
     });
 
     const processed = processTrips({ origen, destino, minUsd, maxUsd, slot, sort, busTypes: types });
-    return { trips: processed, meta: buildMeta(processed), fecha: fechaISO };
+    return { trips: processed, meta: buildMeta(processed), fecha: fechaISO, today: todayISO };
 
 }
