@@ -1,41 +1,7 @@
 import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { Amenidad, loadLeaflet } from "@lib/detail-trip";
 import type { Route } from "./+types/viaje-detalle";
-
-async function loadLeaflet() {
-  if (typeof window === "undefined") return Promise.reject("SSR");
-
-  if (!(document.getElementById("leaflet-css") instanceof HTMLLinkElement)) {
-    const link = document.createElement("link");
-    link.id = "leaflet-css";
-    link.rel = "stylesheet";
-    link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-    link.crossOrigin = "";
-    document.head.appendChild(link);
-  }
-
-  const existingScript = document.getElementById("leaflet-script") as HTMLScriptElement | null;
-
-  if (existingScript && (window as any).L) {
-    return (window as any).L;
-  }
-
-  if (existingScript && !existingScript.dataset.loaded) {
-    return new Promise((resolve) => {
-      existingScript.addEventListener("load", () => resolve((window as any).L));
-    });
-  }
-
-  return new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.id = "leaflet-script";
-    script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-    script.async = true;
-    script.dataset.loaded = "true";
-    script.onload = () => resolve((window as any).L);
-    document.body.appendChild(script);
-  });
-}
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -47,8 +13,14 @@ export function meta(_: Route.MetaArgs) {
 export default function ViajeDetalle() {
 
   const navigate = useNavigate();
+  const location = useLocation();
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
+  const travelDateLabel = new Intl.DateTimeFormat("es-VE", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date());
 
   useEffect(() => {
     if (typeof window === "undefined" || !mapRef.current) return;
@@ -122,6 +94,7 @@ export default function ViajeDetalle() {
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div>
                     <span className="text-2xl font-bold text-primary">07:30 AM</span>
+                    <span className="text-xs text-slate-500 ml-2 align-middle">{travelDateLabel}</span>
                     <h4 className="font-bold text-lg mt-1">Terminal de Oriente (ADON)</h4>
                     <p className="text-sm text-slate-500 mt-1 max-w-md">Autopista Caracas-Guarenas, Petare. Se recomienda llegar 45 minutos antes.</p>
                   </div>
@@ -151,6 +124,7 @@ export default function ViajeDetalle() {
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div>
                     <span className="text-2xl font-bold">10:15 AM</span>
+                    <span className="text-xs text-slate-500 ml-2 align-middle">{travelDateLabel}</span>
                     <h4 className="font-bold text-lg mt-1">Terminal Big Low Center</h4>
                     <p className="text-sm text-slate-500 mt-1 max-w-md">Valencia, Estado Carabobo. Punto de llegada principal.</p>
                   </div>
@@ -235,10 +209,16 @@ export default function ViajeDetalle() {
             </div>
           </div>
           <div className="flex items-center gap-4 w-full md:w-auto">
-            <button className="flex-1 md:flex-none px-8 py-4 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-bold rounded-lg transition-all">
+            <button
+              className="flex-1 md:flex-none px-8 py-4 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-bold rounded-lg transition-all"
+              onClick={() => navigate(`/resultados${location.search || ""}`)}
+            >
               Cancelar
             </button>
-            <button onClick={() => navigate(`/pasajeros?${window.location.search.replace(/^\?/, "")}`)} className="flex-[2] md:flex-none px-12 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+            <button
+              onClick={() => navigate(`/pasajeros${location.search || ""}`)}
+              className="flex-[2] md:flex-none px-12 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
+            >
               Continuar
               <span className="material-icons">arrow_forward</span>
             </button>
@@ -249,13 +229,3 @@ export default function ViajeDetalle() {
   );
 }
 
-type AmenidadProps = { icon: string; label: string };
-
-function Amenidad({ icon, label }: AmenidadProps) {
-  return (
-    <div className="flex items-center gap-2 p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700">
-      <span className="material-icons text-sm text-primary">{icon}</span>
-      <span className="text-xs font-medium">{label}</span>
-    </div>
-  );
-}
