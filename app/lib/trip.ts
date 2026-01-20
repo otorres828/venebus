@@ -284,6 +284,9 @@ export async function resultadosLoader({ request }: { request: Request }) {
     });
 
     const processed = processTrips({ origen, destino, minUsd, maxUsd, slot, sort, busTypes: types });
+    // Simula retraso de respuesta de 3 segundos
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
     return { trips: processed, meta: buildMeta(processed), fecha: fechaISO, today: todayISO };
 
 }

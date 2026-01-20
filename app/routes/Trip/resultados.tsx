@@ -35,6 +35,8 @@ export default function Resultados() {
   const [busTypes, setBusTypes] = useState<number[]>(initialBusTypes); // 1: Ejecutivo, 2: Buscama, 3: Semi-cama
   const [displayTrips, setDisplayTrips] = useState(trips);
   const [showFilters, setShowFilters] = useState(false);
+  const [localMinUsd, setLocalMinUsd] = useState(minUsd);
+  const [localMaxUsd, setLocalMaxUsd] = useState(maxUsd);
   const today = startOfDay(parseISODateLocal(loaderToday));
   const selectedDate = startOfDay(parseISODateLocal(fechaParam));
   const selectedISO = formatISODate(selectedDate);
@@ -121,6 +123,12 @@ export default function Resultados() {
   }
 
   function handlePriceChange(name: "minUsd" | "maxUsd", value: string) {
+    if (name === "minUsd") setLocalMinUsd(value);
+    if (name === "maxUsd") setLocalMaxUsd(value);
+  }
+
+  function commitPrice(name: "minUsd" | "maxUsd") {
+    const value = name === "minUsd" ? localMinUsd : localMaxUsd;
     updateParam(name, value, true);
   }
 
@@ -158,6 +166,9 @@ export default function Resultados() {
     ) {
       setBusTypes(nextTypes);
     }
+    // Sincroniza inputs locales de precio si vienen cambios externos
+    if (minUsd !== localMinUsd) setLocalMinUsd(minUsd);
+    if (maxUsd !== localMaxUsd) setLocalMaxUsd(maxUsd);
   }, [trips, typesParam]);
 
   const filtersUI = (
@@ -259,8 +270,12 @@ export default function Resultados() {
                 <input
                   type="number"
                   min={0}
-                  value={minUsd}
+                  value={localMinUsd}
                   onChange={(e) => handlePriceChange("minUsd", e.target.value)}
+                  onBlur={() => commitPrice("minUsd")}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") commitPrice("minUsd");
+                  }}
                   className="w-full pl-6 pr-3 py-2 text-sm rounded-lg border bg-white dark:bg-background-dark dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
@@ -272,8 +287,12 @@ export default function Resultados() {
                 <input
                   type="number"
                   min={0}
-                  value={maxUsd}
+                  value={localMaxUsd}
                   onChange={(e) => handlePriceChange("maxUsd", e.target.value)}
+                  onBlur={() => commitPrice("maxUsd")}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") commitPrice("maxUsd");
+                  }}
                   className="w-full pl-6 pr-3 py-2 text-sm rounded-lg border bg-white dark:bg-background-dark dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
@@ -295,16 +314,18 @@ export default function Resultados() {
     </div>
   );
 
+  const skeletons = Array.from({ length: 3 }, (_, i) => i);
+
   return (
     <main className="max-w-[1200px] mx-auto px-6 py-8 min-h-screen bg-slate-50 dark:bg-background-dark text-[#111618] dark:text-white">
-      {isLoading && (
+      {/* {isLoading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-3 text-primary">
             <span className="material-symbols-outlined animate-spin text-4xl">progress_activity</span>
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">Cargando resultados…</p>
           </div>
         </div>
-      )}
+      )} */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-8">
         <a className="hover:text-primary" href="#">Inicio</a>
         <span className="material-symbols-outlined text-xs">chevron_right</span>
@@ -407,7 +428,52 @@ export default function Resultados() {
           </div>
 
           <div className="grid gap-4">
-            {displayTrips.length === 0 && (
+            {isLoading && skeletons.map((idx) => (
+              <div key={`skeleton-${idx}`} className="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm animate-pulse">
+                <div className="flex flex-row flex-wrap items-center gap-4 lg:gap-8">
+                  <div className="flex items-center gap-4 w-auto">
+                    <div className="size-16 rounded-lg bg-gray-100 dark:bg-gray-800" />
+                    <div className="space-y-2">
+                      <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded" />
+                      <div className="h-3 w-16 bg-gray-200 dark:bg-gray-700 rounded" />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-[220px] w-full flex flex-col gap-4">
+                    <div className="hidden sm:flex flex-row items-center justify-between gap-4">
+                      <div className="space-y-2">
+                        <div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 rounded" />
+                        <div className="h-3 w-20 bg-gray-200 dark:bg-gray-700 rounded" />
+                      </div>
+                      <div className="flex-1 px-4 flex flex-col items-center gap-3">
+                        <div className="h-2 w-full bg-gray-200 dark:bg-gray-700 rounded" />
+                        <div className="flex gap-2">
+                          <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded" />
+                          <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded" />
+                          <div className="h-4 w-4 bg-gray-200 dark:bg-gray-700 rounded" />
+                        </div>
+                      </div>
+                      <div className="space-y-2 text-right">
+                        <div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 rounded ml-auto" />
+                        <div className="h-3 w-20 bg-gray-200 dark:bg-gray-700 rounded ml-auto" />
+                      </div>
+                    </div>
+                    <div className="sm:hidden space-y-3">
+                      <div className="flex justify-between">
+                        <div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 rounded" />
+                        <div className="h-5 w-16 bg-gray-200 dark:bg-gray-700 rounded" />
+                      </div>
+                      <div className="h-2 w-full bg-gray-200 dark:bg-gray-700 rounded" />
+                    </div>
+                  </div>
+                  <div className="w-full sm:w-auto flex flex-col items-center sm:items-end gap-3 sm:ml-auto">
+                    <div className="h-8 w-28 bg-gray-200 dark:bg-gray-700 rounded" />
+                    <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {!isLoading && displayTrips.length === 0 && (
               <div className="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-xl p-8 text-center shadow-sm">
                 <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-primary">
                   <span className="material-symbols-outlined">search_off</span>
@@ -418,7 +484,7 @@ export default function Resultados() {
               </div>
             )}
 
-            {displayTrips.map((trip) => (
+            {!isLoading && displayTrips.map((trip) => (
               <div key={trip.id} className={`group bg-white dark:bg-background-dark  dark:border-gray-800 rounded-xl p-6 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-none transition-all duration-300 relative overflow-hidden ${trip.soldOut ? "opacity-90" : ""}`}>
                 {!trip.soldOut && (
                   <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500 transform -translate-x-full group-hover:translate-x-0 transition-transform"></div>
