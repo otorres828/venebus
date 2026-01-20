@@ -1,4 +1,4 @@
-import { useNavigate, useLoaderData, useSearchParams, useNavigation } from "react-router";
+import { useNavigate, useLoaderData, useSearchParams, useNavigation, Link } from "react-router";
 import { useEffect, useState } from "react";
 import { resultadosLoader, parseTypes } from "@lib/trip";
 import type { SortKey, SlotFilter } from "@lib/trip";
@@ -7,12 +7,13 @@ export const loader = resultadosLoader;
 
 export function meta({ data }: Route.MetaArgs) {
   const title = data?.meta?.title ?? "VeneBus | Resultados de viajes";
-  const description =
-    data?.meta?.description ?? "Explora opciones de viaje en Venezuela";
-
+  const description = data?.meta?.description ?? "Explora opciones de viaje en Venezuela";
   return [
     { title },
     { name: "description", content: description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { name: "robots", content: "index,follow" },
   ];
 }
 
@@ -318,6 +319,31 @@ export default function Resultados() {
 
   return (
     <main className="max-w-[1200px] mx-auto px-6 py-8 min-h-screen bg-slate-50 dark:bg-background-dark text-[#111618] dark:text-white">
+      {(() => {
+        const jsonLd = {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: trips.map((trip: any, idx: number) => ({
+            "@type": "BusTrip",
+            position: idx + 1,
+            name: `${trip.operator} ${trip.service}`,
+            provider: { "@type": "Organization", name: trip.operator },
+            departureTime: trip.originTime,
+            arrivalTime: trip.destinationTime,
+            departureBusStop: { "@type": "BusStation", name: trip.originLabel },
+            arrivalBusStop: { "@type": "BusStation", name: trip.destinationLabel },
+            offers: {
+              "@type": "Offer",
+              price: trip.priceUsd,
+              priceCurrency: "USD",
+              availability: trip.soldOut ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+            },
+          })),
+        };
+        return (
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        );
+      })()}
       {/* {isLoading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-3 text-primary">
@@ -326,11 +352,20 @@ export default function Resultados() {
           </div>
         </div>
       )} */}
-      <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-8">
-        <div className="hover:text-primary" onClick={()=>navigate('/')}>Inicio</div>
+      <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4" aria-label="breadcrumbs">
+        <Link className="hover:text-primary" to="/">Inicio</Link>
         <span className="material-symbols-outlined text-xs">chevron_right</span>
         <span className="text-[#111618] dark:text-gray-300 font-semibold">{origen} a {destino}</span>
       </nav>
+
+      <header className="mb-6">
+        <h1 className="text-2xl md:text-3xl font-heading font-bold tracking-tight">
+          {origen} a {destino} — {selectedISO}
+        </h1>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          Compara horarios, precios y servicios para tu viaje del {selectedISO}.
+        </p>
+      </header>
 
       <div className="flex flex-col lg:flex-row gap-8">
         <aside className="w-72 shrink-0 hidden md:block">
@@ -427,7 +462,8 @@ export default function Resultados() {
             <p className="text-sm text-gray-500 dark:text-gray-400 font-medium px-4">{displayTrips.length} viajes encontrados</p>
           </div>
 
-          <div className="grid gap-4">
+          <section aria-label="Resultados de viajes">
+            <ul className="grid gap-4">
             {isLoading && skeletons.map((idx) => (
               <div key={`skeleton-${idx}`} className="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-xl p-6 shadow-sm animate-pulse">
                 <div className="flex flex-row flex-wrap items-center gap-4 lg:gap-8">
@@ -485,14 +521,17 @@ export default function Resultados() {
             )}
 
             {!isLoading && displayTrips.map((trip) => (
-              <div key={trip.id} className={`group bg-white dark:bg-background-dark  dark:border-gray-800 rounded-xl p-6 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-none transition-all duration-300 relative overflow-hidden ${trip.soldOut ? "opacity-90" : ""}`}>
+              <li key={trip.id}>
+              <article className={`group bg-white dark:bg-background-dark  dark:border-gray-800 rounded-xl p-6 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-none transition-all duration-300 relative overflow-hidden ${trip.soldOut ? "opacity-90" : ""}`}
+                itemScope itemType="https://schema.org/BusTrip">
                 {!trip.soldOut && (
                   <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500 transform -translate-x-full group-hover:translate-x-0 transition-transform"></div>
                 )}
                 <div className="flex flex-row flex-wrap items-center gap-4 lg:gap-8">
                   <div className="flex items-center gap-4 w-auto">
                     <div className="size-16 rounded-lg bg-gray-50 dark:bg-gray-800 p-2 flex items-center justify-center  dark:border-gray-700">
-                      <img className={`w-full object-contain ${trip.soldOut ? "grayscale" : "grayscale group-hover:grayscale-0 transition-all"}`} src={trip.logo} alt={trip.operator} />
+                      <img className={`w-full object-contain ${trip.soldOut ? "grayscale" : "grayscale group-hover:grayscale-0 transition-all"}`} src={trip.logo} alt={trip.operator}
+                        loading="lazy" decoding="async" width={64} height={64} />
                     </div>
                     <div>
                       <h4 className={`font-heading font-bold text-sm tracking-tight ${trip.soldOut ? "text-gray-500 dark:text-gray-400" : ""}`}>{trip.operator}</h4>
@@ -579,21 +618,23 @@ export default function Resultados() {
                       )}
                     </div>
                     {!trip.soldOut ? (
-                      <button
-                        type="button"
-                        onClick={() => navigate(`/viaje?${searchParams.toString()}`)}
+                      <Link
+                        to={`/viaje-detalle?id=${encodeURIComponent(trip.id)}&${searchParams.toString()}`}
                         className="bg-cyan-500 hover:bg-cyan-500/90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md group-hover:shadow-primary/30 w-full sm:w-auto max-w-[240px] mx-auto sm:mx-0 text-center"
+                        aria-label={`Ver detalle del viaje ${trip.operator}`}
                       >
                         Seleccionar
-                      </button>
+                      </Link>
                     ) : (
                       <button className="bg-gray-100 text-gray-400 font-bold py-3 px-6 rounded-xl cursor-not-allowed w-full sm:w-auto" disabled>Agotado</button>
                     )}
                   </div>
                 </div>
-              </div>
+              </article>
+              </li>
             ))}
-          </div>
+            </ul>
+          </section>
 
           {showFilters && (
             <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm flex">

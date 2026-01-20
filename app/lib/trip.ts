@@ -279,11 +279,12 @@ export async function resultadosLoader({ request }: { request: Request }) {
     const minUsd = Number.isFinite(minUsdNum) ? minUsdNum : defaultMin;
     const maxUsd = maxUsdNum === undefined ? undefined : Number.isFinite(maxUsdNum) ? maxUsdNum : defaultMax;
 
+    const fechaLabel = formatDateEs(fechaISO);
     const buildMeta = () => ({
-        title: `VeneBus | ${origen} a ${destino}`,
-        description:`Encuentra opciones para viajar de ${origen} a ${destino}`,
+        title: `VeneBus | ${origen || "Origen"} a ${destino || "Destino"} — ${fechaLabel ?? fechaISO}`,
+        description: `Encuentra opciones para viajar de ${origen || "tu origen"} a ${destino || "tu destino"}. Compara precios, horarios y servicios.`,
     });
-
+    
     // Si la fecha solicitada es pasada, devolver sin viajes
     if (fechaISO < todayISO) {
         return { trips: [], meta: buildMeta(), fecha: fechaISO, today: todayISO };
