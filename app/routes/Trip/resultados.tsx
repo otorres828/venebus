@@ -424,12 +424,18 @@ export default function Resultados() {
                     </div>
                   </div>
 
-                  <div className="flex-1 min-w-[220px] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div className={`text-left ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
-                      <div className="font-heading text-2xl font-bold leading-none">{trip.originTime}</div>
-                      <div className="text-xs font-bold text-gray-400 mt-1 uppercase tracking-tighter">{trip.originLabel}</div>
+                  <div className="flex-1 min-w-[220px] w-full flex flex-col gap-4">
+                    <div className={`flex items-start justify-between gap-4 ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
+                      <div className="text-left">
+                        <div className="font-heading text-2xl font-bold leading-none">{trip.originTime}</div>
+                        <div className="text-xs font-bold text-gray-400 mt-1 uppercase tracking-tighter">{trip.originLabel}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-heading text-2xl font-bold leading-none">{trip.destinationTime}</div>
+                        <div className="text-xs font-bold text-gray-400 dark:text-gray-500 mt-1 uppercase tracking-tighter">{trip.destinationLabel}</div>
+                      </div>
                     </div>
-                    <div className="flex-1 px-2 sm:px-4 flex flex-col items-center">
+                    <div className="flex-1 px-1 sm:px-4 flex flex-col items-center">
                       <div className={`text-[10px] font-bold ${trip.soldOut ? "text-gray-300 dark:text-gray-500" : "text-gray-400 dark:text-gray-500"} uppercase tracking-widest mb-2`}>{trip.duration}</div>
                       <div className="relative w-full h-px bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                         <div className={`absolute size-2 rounded-full ${trip.soldOut ? "bg-gray-200 dark:bg-gray-700" : "bg-gray-300 dark:bg-gray-600"} left-0`}></div>
@@ -444,17 +450,13 @@ export default function Resultados() {
                         ))}
                       </div>
                     </div>
-                    <div className={`text-right ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
-                      <div className="font-heading text-2xl font-bold leading-none">{trip.destinationTime}</div>
-                      <div className="text-xs font-bold text-gray-400 dark:text-gray-500 mt-1 uppercase tracking-tighter">{trip.destinationLabel}</div>
-                    </div>
                   </div>
 
-                  <div className="flex flex-row flex-wrap items-center gap-3 sm:gap-4 sm:ml-auto border-l border-gray-100 dark:border-gray-800 pl-4 lg:w-48 lg:flex-col lg:items-end lg:justify-center lg:pl-8">
-                    <div className="text-right">
+                  <div className="w-full sm:w-auto flex flex-col items-center sm:items-end gap-3 sm:gap-4 sm:ml-auto sm:border-l sm:border-gray-100 dark:sm:border-gray-800 sm:pl-4 lg:w-48 lg:flex-col lg:justify-center lg:pl-8">
+                    <div className="text-center sm:text-right">
                       {!trip.soldOut ? (
                         <>
-                          <div className="flex items-center gap-1 justify-end">
+                          <div className="flex items-center gap-1 justify-center sm:justify-end">
                             <span className="text-xs font-bold text-gray-400">$</span>
                             <span className="font-heading text-3xl font-bold text-[#111618] dark:text-white">{trip.priceUsd}</span>
                             <span className="text-xs font-bold text-gray-400">USD</span>
@@ -474,7 +476,7 @@ export default function Resultados() {
                       <button
                         type="button"
                         onClick={() => navigate(`/viaje?${searchParams.toString()}`)}
-                        className="bg-cyan-500 hover:bg-cyan-500/90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md group-hover:shadow-primary/30 w-full sm:w-auto"
+                        className="bg-cyan-500 hover:bg-cyan-500/90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md group-hover:shadow-primary/30 w-full sm:w-auto max-w-[240px] mx-auto sm:mx-0 text-center"
                       >
                         Seleccionar
                       </button>

@@ -239,7 +239,7 @@ export default function ViajeDetalle() {
               Cancelar
             </button>
             <button onClick={() => navigate(`/pasajeros?${window.location.search.replace(/^\?/, "")}`)} className="flex-[2] md:flex-none px-12 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
-              Confirmar y Continuar
+              Continuar
               <span className="material-icons">arrow_forward</span>
             </button>
           </div>
