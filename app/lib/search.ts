@@ -81,6 +81,5 @@ export async function homeLoader() {
       precio: "$18.400",
     },
   ];
-
   return { destacados };
 }

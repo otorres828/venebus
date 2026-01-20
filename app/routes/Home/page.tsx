@@ -198,27 +198,79 @@ export default function Home() {
 // Render a lightweight placeholder on the server; hydrate full UI on client
 export function HydrateFallback() {
   return (
-    <main className="max-w-[1280px] mx-auto px-6 py-8 animate-pulse">
-      <section className="relative mb-12 rounded-3xl overflow-hidden min-h-[220px] bg-slate-200 dark:bg-slate-700" />
-      <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
-        <div className="h-6 w-48 rounded bg-slate-200 dark:bg-slate-700" />
-        <div className="flex items-center gap-2">
-          <div className="h-10 w-24 rounded bg-slate-200 dark:bg-slate-700" />
-          <div className="h-10 w-24 rounded bg-slate-200 dark:bg-slate-700" />
-          <div className="h-10 w-24 rounded bg-slate-200 dark:bg-slate-700" />
+    <main className="bg-slate-50 text-slate-900 animate-pulse">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-14 pt-12">
+        <div className="lg:col-span-12 text-center space-y-4 mb-6">
+          <div className="mx-auto h-10 w-64 rounded-2xl bg-slate-200 dark:bg-slate-700" />
+          <div className="mx-auto h-4 w-80 rounded-2xl bg-slate-200 dark:bg-slate-700" />
         </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-700">
-            <div className="h-56 bg-slate-200 dark:bg-slate-700" />
-            <div className="p-6 space-y-3">
-              <div className="h-4 w-40 bg-slate-200 dark:bg-slate-700 rounded" />
-              <div className="h-6 w-64 bg-slate-200 dark:bg-slate-700 rounded" />
-              <div className="h-10 w-full bg-slate-200 dark:bg-slate-700 rounded-xl mt-4" />
+
+        <div className="rounded-2xl bg-white p-6 shadow-md shadow-slate-200/60">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <div key={idx} className="h-12 rounded-xl bg-slate-200 dark:bg-slate-700" />
+            ))}
+            <div className="h-12 rounded-xl bg-slate-300 dark:bg-slate-600" />
+          </div>
+        </div>
+
+        <section className="pb-10 px-2">
+          <div className="max-w-[1200px] mx-auto rounded-[2rem] p-10 bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 border border-slate-700 relative overflow-hidden">
+            <div className="flex flex-col lg:flex-row items-center gap-10">
+              <div className="space-y-4 w-full lg:w-1/2">
+                <div className="h-6 w-40 rounded-full bg-slate-600" />
+                <div className="h-10 w-72 rounded-2xl bg-slate-500" />
+                <div className="h-4 w-64 rounded-2xl bg-slate-600" />
+                <div className="h-4 w-52 rounded-2xl bg-slate-700" />
+                <div className="h-12 w-40 rounded-xl bg-slate-500" />
+              </div>
+              <div className="w-full max-w-sm space-y-4 bg-white/5 rounded-3xl p-6 border border-white/10">
+                <div className="h-4 w-44 rounded bg-slate-200/60" />
+                <div className="flex justify-center gap-3">
+                  {Array.from({ length: 3 }).map((_, idx) => (
+                    <div key={idx} className="size-16 rounded-2xl bg-slate-200/70" />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-        ))}
+        </section>
+
+        <section className="py-10 px-2 bg-[#f5f7f8] dark:bg-[#1c2226] rounded-3xl">
+          <div className="max-w-[1200px] mx-auto space-y-6">
+            <div className="flex justify-between items-center">
+              <div className="space-y-2">
+                <div className="h-6 w-40 rounded bg-slate-200 dark:bg-slate-700" />
+                <div className="h-4 w-64 rounded bg-slate-200 dark:bg-slate-700" />
+              </div>
+              <div className="h-4 w-20 rounded bg-slate-200 dark:bg-slate-700" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 3 }).map((_, idx) => (
+                <div key={idx} className="rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-800">
+                  <div className="h-48 bg-slate-200 dark:bg-slate-700" />
+                  <div className="p-4 space-y-3">
+                    <div className="h-4 w-48 rounded bg-slate-200 dark:bg-slate-700" />
+                    <div className="h-4 w-32 rounded bg-slate-200 dark:bg-slate-700" />
+                    <div className="h-8 w-24 rounded bg-slate-200 dark:bg-slate-700" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-10 px-2">
+          <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <div key={idx} className="p-8 rounded-3xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 space-y-4">
+                <div className="size-12 rounded-2xl bg-slate-200 dark:bg-slate-700" />
+                <div className="h-5 w-40 rounded bg-slate-200 dark:bg-slate-700" />
+                <div className="h-4 w-56 rounded bg-slate-200 dark:bg-slate-700" />
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );
