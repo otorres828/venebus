@@ -1,4 +1,4 @@
-import { useNavigate, useLoaderData, useSearchParams } from "react-router";
+import { useNavigate, useLoaderData, useSearchParams, useNavigation } from "react-router";
 import { useEffect, useState } from "react";
 import { resultadosLoader, parseTypes } from "@lib/trip";
 import type { SortKey, SlotFilter } from "@lib/trip";
@@ -19,6 +19,7 @@ export function meta({ data }: Route.MetaArgs) {
 export default function Resultados() {
 
   const navigate = useNavigate();
+  const navigation = useNavigation();
   const { trips, fecha: loaderFecha, today: loaderToday } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -38,6 +39,7 @@ export default function Resultados() {
   const selectedDate = startOfDay(parseISODateLocal(fechaParam));
   const selectedISO = formatISODate(selectedDate);
   const windowDates: Date[] = [addDays(selectedDate, -2), addDays(selectedDate, -1), selectedDate, addDays(selectedDate, 1)];
+  const isLoading = navigation.state !== "idle";
 
   const setTypesInUrl = (nextTypes: number[]) => {
     const next = new URLSearchParams(searchParams);
@@ -295,6 +297,14 @@ export default function Resultados() {
 
   return (
     <main className="max-w-[1200px] mx-auto px-6 py-8 min-h-screen bg-slate-50 dark:bg-background-dark text-[#111618] dark:text-white">
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-3 text-primary">
+            <span className="material-symbols-outlined animate-spin text-4xl">progress_activity</span>
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">Cargando resultados…</p>
+          </div>
+        </div>
+      )}
       <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-8">
         <a className="hover:text-primary" href="#">Inicio</a>
         <span className="material-symbols-outlined text-xs">chevron_right</span>

@@ -39,8 +39,6 @@ function parseDurationMinutes(duration: string): number {
     return h * 60 + m;
 }
 
-
-
 export type SlotFilter = "manana" | "tarde" | "noche" | undefined;
 export type SortKey = "barato" | "rapido" | "temprano";
 
