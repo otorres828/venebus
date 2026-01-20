@@ -404,13 +404,7 @@ export default function Resultados() {
                 </div>
                 <h3 className="text-lg font-bold mb-2">No hay resultados para esta búsqueda</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Ajusta la fecha, el precio o los filtros para ver más opciones.</p>
-                <button
-                  type="button"
-                  onClick={resetFilters}
-                  className="px-5 py-2.5 rounded-lg bg-primary text-white font-semibold shadow-sm hover:bg-primary/90 transition-colors"
-                >
-                  Reiniciar filtros
-                </button>
+              
               </div>
             )}
 
