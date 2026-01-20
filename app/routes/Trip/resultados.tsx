@@ -508,7 +508,14 @@ export default function Resultados() {
                   </button>
                 </div>
                 <div className="space-y-6">{filtersUI}</div>
-                <div className="mt-6 flex justify-end">
+                <div className="mt-6 flex gap-3 justify-end">
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="flex-1 sm:flex-none px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 font-semibold text-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  >
+                    Reiniciar
+                  </button>
                   <button
                     type="button"
                     onClick={() => setShowFilters(false)}
