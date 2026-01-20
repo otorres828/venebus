@@ -327,7 +327,7 @@ export default function Resultados() {
         </div>
       )} */}
       <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-8">
-        <a className="hover:text-primary" href="#">Inicio</a>
+        <div className="hover:text-primary" onClick={()=>navigate('/')}>Inicio</div>
         <span className="material-symbols-outlined text-xs">chevron_right</span>
         <span className="text-[#111618] dark:text-gray-300 font-semibold">{origen} a {destino}</span>
       </nav>
