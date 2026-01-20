@@ -27,7 +27,7 @@ export function ResultadosHeader() {
 
     return (
         <header className="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
-            <div className="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between gap-8">
+            <div className="max-w-[1200px] mx-auto px-3 md:px-6 h-20 flex items-center justify-between gap-6">
                 <div className="flex items-center gap-10">
                     <button
                         type="button"
@@ -66,7 +66,7 @@ export function ResultadosHeader() {
                     </nav>
                     <div className="flex items-center gap-3">
                         <button onClick={() => navigate('/iniciar-sesion')} className="text-sm font-bold text-gray-700 dark:text-gray-200 px-4 py-2.5 hover:text-primary transition-colors">Iniciar Sesión</button>
-                        <button onClick={() => navigate('/registrarse')} className="bg-cyan-500 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-cyan-500/90 transition-all shadow-lg shadow-primary/20">Registrarse</button>
+                        <button onClick={() => navigate('/registrarse')} className="bg-cyan-500 text-white px-3 md:px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-cyan-500/90 transition-all shadow-lg shadow-primary/20">Registrarse</button>
                     </div>
                 </div>
             </div>

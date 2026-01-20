@@ -7,7 +7,7 @@ function DefaultHeader() {
   const isAuthRoute = pathname.startsWith("/iniciar-sesion") || pathname.startsWith("/registro") || pathname.startsWith("/registrarse");
   return (
     <header className="sticky top-0 z-50 w-full border-b border-solid border-[#f0f3f4] dark:border-[#2d3439] bg-slate-50/80 dark:bg-background-dark/80 backdrop-blur-md">
-      <div className="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="max-w-[1200px] mx-auto px-3 md:px-6 h-20 flex items-center justify-between">
         <button
           type="button"
           onClick={() => navigate("/")}

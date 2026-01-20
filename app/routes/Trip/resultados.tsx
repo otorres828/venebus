@@ -165,7 +165,7 @@ export default function Resultados() {
         <span className="text-[#111618] dark:text-gray-300 font-semibold">{origen} a {destino}</span>
       </nav>
 
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row gap-8">
         <aside className="w-72 shrink-0 hidden md:block">
           <div className="sticky top-28 space-y-8">
             <div>
@@ -303,7 +303,7 @@ export default function Resultados() {
 
         {/* Parte Derecha */}
         <div className="flex-1 space-y-6">
-          <div className="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-2xl p-2 flex items-center gap-2">
+          <div className="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-2xl p-2 flex items-center gap-2 overflow-x-auto">
             <button
               type="button"
               onClick={prevDay}
@@ -313,7 +313,7 @@ export default function Resultados() {
             >
               <span className="material-symbols-outlined">chevron_left</span>
             </button>
-            <div className="flex-1 flex items-center justify-center gap-2">
+            <div className="flex-1 flex items-center justify-center gap-2 min-w-[320px]">
               {windowDates.map((d) => {
                 const iso = formatISODate(d);
                 const isSelected = iso === selectedISO;
@@ -323,7 +323,7 @@ export default function Resultados() {
                     key={iso}
                     type="button"
                     onClick={() => !isPast && setSelectedDate(d)}
-                    className={`flex-1 sm:flex-none px-4 py-3 rounded-xl border text-center transition-all ${isSelected ? "bg-primary text-white border-primary" : "bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"} ${isPast && !isSelected ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`flex-1 sm:flex-none min-w-[160px] px-4 py-3 rounded-xl border text-center transition-all ${isSelected ? "bg-primary text-white border-primary" : "bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"} ${isPast && !isSelected ? "opacity-50 cursor-not-allowed" : ""}`}
                     aria-pressed={isSelected}
                   >
                     <strong className="sm:hidden text-sm">{formatShort(d)}</strong>
@@ -341,26 +341,27 @@ export default function Resultados() {
               <span className="material-symbols-outlined">chevron_right</span>
             </button>
           </div>
-          <div className="flex items-center justify-between bg-white dark:bg-background-dark p-2 rounded-xl  dark:border-gray-800 shadow-sm text-gray-700 dark:text-gray-200">
-            <div className="flex gap-1">
+
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white dark:bg-background-dark p-2 rounded-xl  dark:border-gray-800 shadow-sm text-gray-700 dark:text-gray-200">
+            <div className="flex gap-1 flex-wrap">
               <button
                 type="button"
                 onClick={() => changeSort("barato")}
-                className={`px-5 py-2.5 text-sm font-bold rounded-lg border cursor-pointer transition-colors ${sort === "barato" ? "bg-cyan-500/20 text-primary" : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
+                className={`px-3 py-2.5 text-sm font-bold rounded-lg border cursor-pointer transition-colors ${sort === "barato" ? "bg-cyan-500/20 text-primary" : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
               >
                 Más Barato
               </button>
               <button
                 type="button"
                 onClick={() => changeSort("rapido")}
-                className={`px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${sort === "rapido" ? "bg-cyan-500/20 text-primary border" : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
+                className={`px-3 py-2.5 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${sort === "rapido" ? "bg-cyan-500/20 text-primary border" : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
               >
                 Más Rápido
               </button>
               <button
                 type="button"
                 onClick={() => changeSort("temprano")}
-                className={`px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${sort === "temprano" ? "bg-cyan-500/20 text-primary border" : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
+                className={`px-3 py-2.5 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${sort === "temprano" ? "bg-cyan-500/20 text-primary border" : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
               >
                 Más Temprano
               </button>
@@ -376,22 +377,23 @@ export default function Resultados() {
                 </div>
                 <h3 className="text-lg font-bold mb-2">No hay resultados para esta búsqueda</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Ajusta la fecha, el precio o los filtros para ver más opciones.</p>
-                {/* <button
+                <button
                   type="button"
                   onClick={resetFilters}
                   className="px-5 py-2.5 rounded-lg bg-primary text-white font-semibold shadow-sm hover:bg-primary/90 transition-colors"
                 >
                   Reiniciar filtros
-                </button> */}
+                </button>
               </div>
             )}
+
             {displayTrips.map((trip) => (
               <div key={trip.id} className={`group bg-white dark:bg-background-dark  dark:border-gray-800 rounded-xl p-6 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-none transition-all duration-300 relative overflow-hidden ${trip.soldOut ? "opacity-90" : ""}`}>
                 {!trip.soldOut && (
                   <div className="absolute top-0 left-0 w-1 h-full bg-cyan-500 transform -translate-x-full group-hover:translate-x-0 transition-transform"></div>
                 )}
-                <div className="flex flex-col lg:flex-row gap-8 lg:items-center">
-                  <div className="w-full lg:w-48 flex flex-row lg:flex-col items-center lg:items-start gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center lg:items-start gap-6 lg:gap-8">
+                  <div className="flex items-center sm:items-start gap-4 w-full sm:w-48">
                     <div className="size-16 rounded-lg bg-gray-50 dark:bg-gray-800 p-2 flex items-center justify-center  dark:border-gray-700">
                       <img className={`w-full object-contain ${trip.soldOut ? "grayscale" : "grayscale group-hover:grayscale-0 transition-all"}`} src={trip.logo} alt={trip.operator} />
                     </div>
@@ -401,8 +403,8 @@ export default function Resultados() {
                     </div>
                   </div>
 
-                  <div className="flex-1 flex items-center justify-between gap-4">
-                    <div className={`text-center lg:text-left ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
+                  <div className="flex-1 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className={`text-center md:text-left ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
                       <div className="font-heading text-2xl font-bold">{trip.originTime}</div>
                       <div className="text-xs font-bold text-gray-400 mt-1 uppercase tracking-tighter">{trip.originLabel}</div>
                     </div>
@@ -421,14 +423,14 @@ export default function Resultados() {
                         ))}
                       </div>
                     </div>
-                    <div className={`text-center lg:text-right ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
+                    <div className={`text-center md:text-right ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
                       <div className="font-heading text-2xl font-bold">{trip.destinationTime}</div>
                       <div className="text-xs font-bold text-gray-400 dark:text-gray-500 mt-1 uppercase tracking-tighter">{trip.destinationLabel}</div>
                     </div>
                   </div>
 
-                  <div className="lg:w-48 flex flex-row lg:flex-col items-center lg:items-end justify-between lg:justify-center border-t lg:border-t-0 lg:border-l border-gray-100 dark:border-gray-800 pt-6 lg:pt-0 lg:pl-8 gap-4">
-                    <div className="text-right">
+                  <div className="w-full sm:w-auto lg:w-48 flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end justify-between lg:justify-center border-t sm:border-t-0 lg:border-l border-gray-100 dark:border-gray-800 pt-6 sm:pt-0 lg:pt-0 sm:pl-6 lg:pl-8 gap-3 sm:gap-4">
+                    <div className="text-left sm:text-right">
                       {!trip.soldOut ? (
                         <>
                           <div className="flex items-center gap-1 justify-end">
@@ -451,12 +453,12 @@ export default function Resultados() {
                       <button
                         type="button"
                         onClick={() => navigate(`/viaje?${searchParams.toString()}`)}
-                        className="bg-cyan-500 hover:bg-cyan-500/90 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md group-hover:shadow-primary/30"
+                        className="bg-cyan-500 hover:bg-cyan-500/90 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md group-hover:shadow-primary/30 w-full sm:w-auto sm:self-end"
                       >
                         Seleccionar
                       </button>
                     ) : (
-                      <button className="bg-gray-100 text-gray-400 font-bold py-3 px-8 rounded-xl cursor-not-allowed" disabled>Agotado</button>
+                      <button className="bg-gray-100 text-gray-400 font-bold py-3 px-8 rounded-xl cursor-not-allowed w-full sm:w-auto sm:self-end" disabled>Agotado</button>
                     )}
                   </div>
                 </div>

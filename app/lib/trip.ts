@@ -282,7 +282,7 @@ export async function resultadosLoader({ request }: { request: Request }) {
     const buildMeta = (trips: Trip[], meta?: MetaShape) => ({
         title: meta?.title ?? `VeneBus | ${origen} a ${destino}`,
         description:
-            meta?.description ?? `Encuentra ${trips.length} opciones para viajar de ${origen} a ${destino}${fechaISO ? ` para el ${formatDateEs(fechaISO)}` : ""}.`,
+            meta?.description ?? `Encuentra opciones para viajar de ${origen} a ${destino}`,
     });
 
     const processed = processTrips({ origen, destino, minUsd, maxUsd, slot, sort, busTypes: types });
