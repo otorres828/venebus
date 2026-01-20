@@ -19,20 +19,19 @@ function DefaultHeader() {
           </div>
           <h2 className="font-heading text-2xl font-bold tracking-tight">VeneBus</h2>
         </button>
-        <nav className="hidden md:flex items-center gap-8">
-          <div className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/consultar-viaje')}>Viajes</div>
-          <div className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/promociones')}>Promos</div>
-          <div className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/ayuda')}>Ayuda</div>
-        </nav>
-        <div className="flex gap-3">
+
+        <div className="flex items-center gap-6">
           {!isAuthRoute && (
             <>
-              <button onClick={() => navigate('/iniciar-sesion')} className="flex items-center justify-center rounded-xl h-11 px-5 bg-cyan-500/10 text-primary text-sm font-bold hover:bg-cyan-500/20 transition-all">
-                <span>Iniciar Sesión</span>
-              </button>
-              <button onClick={() => navigate('/registrarse')} className="flex items-center justify-center rounded-xl h-11 px-5 bg-cyan-500 text-white text-sm font-bold shadow-lg shadow-primary/25 hover:scale-[1.02] active:scale-95 transition-all">
-                <span>Registrarse</span>
-              </button>
+              <nav className="hidden lg:flex items-center gap-8">
+                <div className="text-sm font-medium hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/consultar-viaje')}>Viajes</div>
+                <div className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/promociones')}>Promos</div>
+                <div className="text-sm font-medium hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/ayuda')}>Ayuda</div>
+              </nav>
+              <div className="flex items-center gap-3">
+                <button onClick={() => navigate('/iniciar-sesion')} className="text-sm font-bold text-gray-700 dark:text-gray-200 px-4 py-2.5 hover:text-primary transition-colors">Iniciar Sesión</button>
+                <button onClick={() => navigate('/registrarse')} className="bg-cyan-500 text-white px-3 md:px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-cyan-500/90 transition-all shadow-lg shadow-primary/20">Registrarse</button>
+              </div>
             </>
           )}
         </div>
