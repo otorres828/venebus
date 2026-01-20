@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import InputField from "@globals/InputField";
 import { AutocompleteInput } from "@globals/AutocompleteInput";
+import SpinnerOverlay from "./SpinnerOverlay";
 
 type BusquedaProps = {
   initialOrigen?: string;
@@ -16,6 +17,7 @@ export default function Busqueda({ initialOrigen, initialDestino, initialFecha, 
   const [origen, setOrigen] = useState(initialOrigen ?? "");
   const [destino, setDestino] = useState(initialDestino ?? "");
   const [fecha, setFecha] = useState(initialFecha ?? "");
+  const [loading, setLoading] = useState(false);
 
   const todayLocal = new Date();
   todayLocal.setHours(0, 0, 0, 0);
@@ -39,6 +41,8 @@ export default function Busqueda({ initialOrigen, initialDestino, initialFecha, 
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
+    if (loading) return;
 
     const o = origen.trim();
     const d = destino.trim();
@@ -71,18 +75,25 @@ export default function Busqueda({ initialOrigen, initialDestino, initialFecha, 
       return;
     }
 
-    const params = new URLSearchParams();
-    params.set("origen", o);
-    params.set("destino", d);
-    params.set("fecha", f);
-    params.set("minUsd", "10");
-    params.set("maxUsd", "100");
-    navigate(`/resultados?${params.toString()}`);
-    if (onSubmitted) onSubmitted();
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      params.set("origen", o);
+      params.set("destino", d);
+      params.set("fecha", f);
+      params.set("minUsd", "10");
+      params.set("maxUsd", "100");
+      navigate(`/resultados?${params.toString()}`);
+      if (onSubmitted) onSubmitted();
+    } catch (err) {
+      setLoading(false);
+      throw err;
+    }
   };
 
   return (
     <div className="rounded-2xl bg-white p-6 shadow-md shadow-slate-200/60">
+      {loading && <SpinnerOverlay />}
       <form className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" onSubmit={onSubmit}>
         <AutocompleteInput
           label="Origen"

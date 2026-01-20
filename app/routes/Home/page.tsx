@@ -1,6 +1,6 @@
-import { useLoaderData } from "react-router";
-import Busqueda from "@components/Busqueda";
+// import { useLoaderData } from "react-router";
 import { homeLoader } from "@lib/search";
+import Busqueda from "@components/Busqueda";
 import type { Route } from "./+types/page";
 
 export function meta(_: Route.MetaArgs) {
@@ -13,7 +13,7 @@ export function meta(_: Route.MetaArgs) {
 export const clientLoader  = homeLoader;
 
 export default function Home() {
-  const data = useLoaderData<typeof clientLoader >();
+  // const data = useLoaderData<typeof clientLoader >();
   return (
     <main className="bg-slate-50 text-slate-900">
 
