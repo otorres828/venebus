@@ -355,18 +355,10 @@ export default function Resultados() {
       <nav className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4" aria-label="breadcrumbs">
         <Link className="hover:text-primary" to="/">Inicio</Link>
         <span className="material-symbols-outlined text-xs">chevron_right</span>
-        <span className="text-[#111618] dark:text-gray-300 font-semibold">{origen} a {destino}</span>
+        <h1><span className="text-[#111618] dark:text-gray-300 font-semibold">{origen} a {destino}</span></h1>
       </nav>
 
-      <header className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-heading font-bold tracking-tight">
-          {origen} a {destino} — {selectedISO}
-        </h1>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          Compara horarios, precios y servicios para tu viaje del {selectedISO}.
-        </p>
-      </header>
-
+    
       <div className="flex flex-col lg:flex-row gap-8">
         <aside className="w-72 shrink-0 hidden md:block">
           <div className="sticky top-28 space-y-8">
