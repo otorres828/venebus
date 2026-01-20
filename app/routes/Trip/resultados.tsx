@@ -369,6 +369,22 @@ export default function Resultados() {
           </div>
 
           <div className="grid gap-4">
+            {displayTrips.length === 0 && (
+              <div className="bg-white dark:bg-background-dark border border-gray-100 dark:border-gray-800 rounded-xl p-8 text-center shadow-sm">
+                <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-primary">
+                  <span className="material-symbols-outlined">search_off</span>
+                </div>
+                <h3 className="text-lg font-bold mb-2">No hay resultados para esta búsqueda</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Ajusta la fecha, el precio o los filtros para ver más opciones.</p>
+                {/* <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="px-5 py-2.5 rounded-lg bg-primary text-white font-semibold shadow-sm hover:bg-primary/90 transition-colors"
+                >
+                  Reiniciar filtros
+                </button> */}
+              </div>
+            )}
             {displayTrips.map((trip) => (
               <div key={trip.id} className={`group bg-white dark:bg-background-dark  dark:border-gray-800 rounded-xl p-6 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-none transition-all duration-300 relative overflow-hidden ${trip.soldOut ? "opacity-90" : ""}`}>
                 {!trip.soldOut && (
