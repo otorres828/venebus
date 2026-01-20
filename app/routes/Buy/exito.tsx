@@ -109,10 +109,10 @@ export default function Exito() {
                 Descargar PDF
               </button>
               
-              <button className="flex items-center justify-center gap-3 w-full h-12 bg-[#25D366] text-white rounded-lg font-bold hover:bg-opacity-80 transition-all">
+              {/* <button className="flex items-center justify-center gap-3 w-full h-12 bg-[#25D366] text-white rounded-lg font-bold hover:bg-opacity-80 transition-all">
                 <span className="material-symbols-outlined text-[20px]">share</span>
                 Compartir por WhatsApp
-              </button>
+              </button> */}
 
               <a
                 href="/"
@@ -137,10 +137,10 @@ export default function Exito() {
             </a>
           </div>
 
-          <div className="flex flex-col items-center gap-2 pt-4">
+          {/* <div className="flex flex-col items-center gap-2 pt-4">
             <div className="size-24 bg-center bg-no-repeat bg-cover rounded-lg grayscale opacity-50 border border-gray-200" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCHXknkFHRnMe9KZRVnmUm3f09-pAD62ssVzTAAjdT7ueNm89Ij2WoY0eOtTGHov83fRXj6QNX9tfQlxbglxTXRu9GPBKm5BXmiAyqLaKNRgEXlG3ltszjpsfSGwHB3_2JvCHldqRw-SlRVkpQ1DID-68RRqma94XLJpSxvR4Xoa1slpWBfSMVR3mEMdTxOTeleE3tLyFmkbq8Mq-5IP6BJ6tZEwUuw-lsGt7HlkpeiUfb5YTbGLmDv37UGHl964DGEr1Lb5lPw_Q')" }}></div>
             <p className="text-xs text-center text-[#637688] font-bold hover:text-primary cursor-pointer">Ver mapa del terminal</p>
-          </div>
+          </div> */}
         </div>
       </div>
 
