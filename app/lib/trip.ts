@@ -230,6 +230,7 @@ export function processTrips({
     slot,
     sort,
     busTypes,
+    fecha,
 }: {
     origen?: string;
     destino?: string;
@@ -238,6 +239,7 @@ export function processTrips({
     slot: SlotFilter;
     sort: SortKey;
     busTypes?: number[];
+    fecha?: string;
 }) {
     const sourceTrips = getMockTrips(origen, destino);
     const byPrice = filterTripsByPrice(sourceTrips, minUsd, maxUsd);
@@ -257,8 +259,8 @@ function formatDateEs(iso?: string) {
 
 export async function resultadosLoader({ request }: { request: Request }) {
     const url = new URL(request.url);
-    const origen = url.searchParams.get("origen") ?? "Caracas";
-    const destino = url.searchParams.get("destino") ?? "Maracaibo";
+    const origen = url.searchParams.get("origen") ?? "";
+    const destino = url.searchParams.get("destino") ?? "";
     const minUsdParam = url.searchParams.get("minUsd");
     const maxUsdParam = url.searchParams.get("maxUsd");
     const slot = (url.searchParams.get("slot") as SlotFilter) ?? undefined;
@@ -277,16 +279,20 @@ export async function resultadosLoader({ request }: { request: Request }) {
     const minUsd = Number.isFinite(minUsdNum) ? minUsdNum : defaultMin;
     const maxUsd = maxUsdNum === undefined ? undefined : Number.isFinite(maxUsdNum) ? maxUsdNum : defaultMax;
 
-    const buildMeta = (trips: Trip[], meta?: MetaShape) => ({
-        title: meta?.title ?? `VeneBus | ${origen} a ${destino}`,
-        description:
-            meta?.description ?? `Encuentra opciones para viajar de ${origen} a ${destino}`,
+    const buildMeta = () => ({
+        title: `VeneBus | ${origen} a ${destino}`,
+        description:`Encuentra opciones para viajar de ${origen} a ${destino}`,
     });
 
-    const processed = processTrips({ origen, destino, minUsd, maxUsd, slot, sort, busTypes: types });
+    // Si la fecha solicitada es pasada, devolver sin viajes
+    if (fechaISO < todayISO) {
+        return { trips: [], meta: buildMeta(), fecha: fechaISO, today: todayISO };
+    }
+
+    const processed = processTrips({ origen, destino, minUsd, maxUsd, slot, sort, busTypes: types, fecha: fechaISO });
     // Simula retraso de respuesta de 3 segundos
     await new Promise((resolve) => setTimeout(resolve, 300));
 
-    return { trips: processed, meta: buildMeta(processed), fecha: fechaISO, today: todayISO };
+    return { trips: processed, meta: buildMeta(), fecha: fechaISO, today: todayISO };
 
 }
