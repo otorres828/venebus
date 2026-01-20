@@ -60,7 +60,7 @@ export function ResultadosHeader() {
                 </div>
                 <div className="flex items-center gap-6">
                     <nav className="hidden lg:flex items-center gap-8">
-                        <a className="text-sm font-medium hover:text-primary transition-colors" href="#">Viajes</a>
+                        <div className="text-sm font-medium hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/consultar-viaje')}>Viajes</div>
                         <div className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/promociones')}>Promos</div>
                         <div className="text-sm font-medium hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/ayuda')}>Ayuda</div>
                     </nav>

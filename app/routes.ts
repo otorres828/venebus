@@ -4,6 +4,7 @@ export default [
 	index("routes/Home/page.tsx"),
 	route("resultados", "routes/Trip/resultados.tsx"),
 	route("viaje", "routes/Trip/viaje-detalle.tsx"),
+	route("consultar-viaje", "routes/consultar.tsx"),
 	route("pasajeros", "routes/Checkout/pasajeros.tsx"),
 	route("pagar", "routes/Checkout/checkout.tsx"),
 	route("exito", "routes/Checkout/exito.tsx"),

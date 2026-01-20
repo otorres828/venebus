@@ -369,7 +369,7 @@ export default function Resultados() {
                     {!trip.soldOut ? (
                       <button
                         type="button"
-                        onClick={() => navigate("/viaje")}
+                        onClick={() => navigate(`/viaje?${searchParams.toString()}`)}
                         className="bg-cyan-500 hover:bg-cyan-500/90 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-md group-hover:shadow-primary/30"
                       >
                         Seleccionar

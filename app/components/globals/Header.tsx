@@ -20,7 +20,7 @@ function DefaultHeader() {
           <h2 className="font-heading text-2xl font-bold tracking-tight">VeneBus</h2>
         </button>
         <nav className="hidden md:flex items-center gap-8">
-          <a className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors" href="#">Viajes</a>
+          <div className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/consultar-viaje')}>Viajes</div>
           <div className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/promociones')}>Promos</div>
           <div className="text-[#111618] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors cursor-pointer" onClick={() => navigate('/ayuda')}>Ayuda</div>
         </nav>

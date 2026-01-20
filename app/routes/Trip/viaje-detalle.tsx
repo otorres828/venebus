@@ -238,7 +238,7 @@ export default function ViajeDetalle() {
             <button className="flex-1 md:flex-none px-8 py-4 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 font-bold rounded-lg transition-all">
               Cancelar
             </button>
-            <button onClick={() => navigate("/pasajeros")} className="flex-[2] md:flex-none px-12 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+            <button onClick={() => navigate(`/pasajeros?${window.location.search.replace(/^\?/, "")}`)} className="flex-[2] md:flex-none px-12 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
               Confirmar y Continuar
               <span className="material-icons">arrow_forward</span>
             </button>
