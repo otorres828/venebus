@@ -105,7 +105,7 @@ export default function ViajeDetalle() {
             <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
               <h2 className="font-semibold flex items-center gap-2">
                 <span className="material-icons text-primary">map</span>
-                Ruta Sugerida
+                Ruta
               </h2>
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Vía Autopista Regional del Centro</span>
             </div>
