@@ -284,6 +284,6 @@ export async function resultadosLoader({ request }: { request: Request }) {
     });
 
     const processed = processTrips({ origen, destino, minUsd, maxUsd, slot, sort, busTypes: types });
-    return { trips: processed, meta: buildMeta(processed) };
+    return { trips: processed, meta: buildMeta(processed), fecha: fechaISO };
 
 }

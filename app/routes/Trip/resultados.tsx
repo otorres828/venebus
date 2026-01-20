@@ -19,7 +19,7 @@ export function meta({ data }: Route.MetaArgs) {
 export default function Resultados() {
 
   const navigate = useNavigate();
-  const { trips } = useLoaderData<typeof loader>();
+  const { trips, fecha: loaderFecha } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const origen = searchParams.get("origen") ?? "Caracas";
@@ -29,7 +29,7 @@ export default function Resultados() {
   const sort = (searchParams.get("sort") as SortKey) ?? "barato";
   const slot = (searchParams.get("slot") as SlotFilter) ?? undefined;
   const typesParam = searchParams.get("types") ?? "";
-  const fechaParam = searchParams.get("fecha") ?? formatISODate(new Date());
+  const fechaParam = searchParams.get("fecha") ?? loaderFecha;
   const initialBusTypes = parseTypes(typesParam);
   const [busTypes, setBusTypes] = useState<number[]>(initialBusTypes); // 1: Ejecutivo, 2: Buscama, 3: Semi-cama
   const [displayTrips, setDisplayTrips] = useState(trips);
