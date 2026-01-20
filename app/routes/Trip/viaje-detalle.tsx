@@ -51,6 +51,11 @@ export default function ViajeDetalle() {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
   const location = useLocation();
+  const travelDateLabel = new Intl.DateTimeFormat("es-VE", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date());
   
   useEffect(() => {
     if (typeof window === "undefined" || !mapRef.current) return;
@@ -124,6 +129,7 @@ export default function ViajeDetalle() {
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div>
                     <span className="text-2xl font-bold text-primary">07:30 AM</span>
+                    <span className="text-xs text-slate-500 ml-2 align-middle">{travelDateLabel}</span>
                     <h4 className="font-bold text-lg mt-1">Terminal de Oriente (ADON)</h4>
                     <p className="text-sm text-slate-500 mt-1 max-w-md">Autopista Caracas-Guarenas, Petare. Se recomienda llegar 45 minutos antes.</p>
                   </div>
@@ -153,6 +159,7 @@ export default function ViajeDetalle() {
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div>
                     <span className="text-2xl font-bold">10:15 AM</span>
+                    <span className="text-xs text-slate-500 ml-2 align-middle">{travelDateLabel}</span>
                     <h4 className="font-bold text-lg mt-1">Terminal Big Low Center</h4>
                     <p className="text-sm text-slate-500 mt-1 max-w-md">Valencia, Estado Carabobo. Punto de llegada principal.</p>
                   </div>
