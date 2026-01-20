@@ -9,8 +9,14 @@ export function Amenidad({ icon, label }: AmenidadProps) {
   );
 }
 
+let leafletPromise: Promise<any> | null = null;
+
 export async function loadLeaflet() {
   if (typeof window === "undefined") return Promise.reject("SSR");
+
+  if (leafletPromise) return leafletPromise;
+
+  if ((window as any).L) return Promise.resolve((window as any).L);
 
   if (!(document.getElementById("leaflet-css") instanceof HTMLLinkElement)) {
     const link = document.createElement("link");
@@ -23,23 +29,23 @@ export async function loadLeaflet() {
 
   const existingScript = document.getElementById("leaflet-script") as HTMLScriptElement | null;
 
-  if (existingScript && (window as any).L) {
-    return (window as any).L;
-  }
+  leafletPromise = new Promise((resolve, reject) => {
+    const resolveWithLib = () => resolve((window as any).L);
 
-  if (existingScript && !existingScript.dataset.loaded) {
-    return new Promise((resolve) => {
-      existingScript.addEventListener("load", () => resolve((window as any).L));
-    });
-  }
+    if (existingScript) {
+      existingScript.addEventListener("load", resolveWithLib, { once: true });
+      existingScript.addEventListener("error", reject, { once: true });
+      return;
+    }
 
-  return new Promise((resolve) => {
     const script = document.createElement("script");
     script.id = "leaflet-script";
     script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
     script.async = true;
-    script.dataset.loaded = "true";
-    script.onload = () => resolve((window as any).L);
+    script.onload = resolveWithLib;
+    script.onerror = reject;
     document.body.appendChild(script);
   });
+
+  return leafletPromise;
 }

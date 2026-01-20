@@ -16,6 +16,7 @@ export default function ViajeDetalle() {
   const location = useLocation();
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<any>(null);
+  const mapInitRef = useRef(false);
   const travelDateLabel = new Intl.DateTimeFormat("es-VE", {
     day: "2-digit",
     month: "short",
@@ -25,7 +26,8 @@ export default function ViajeDetalle() {
   useEffect(() => {
     if (typeof window === "undefined" || !mapRef.current) return;
     // Evita inicializaciones múltiples en modo estricto de React (dev)
-    if (mapInstanceRef.current) return;
+    if (mapInstanceRef.current || mapInitRef.current) return;
+    mapInitRef.current = true;
 
     const routeCoords: [number, number][] = [
       [10.4806, -66.9036], // Caracas
@@ -51,13 +53,16 @@ export default function ViajeDetalle() {
       map.fitBounds(polyline.getBounds(), { padding: [20, 20] });
     };
 
-    initMap();
+    initMap().finally(() => {
+      mapInitRef.current = false;
+    });
 
     return () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
       }
+      mapInitRef.current = false;
     };
   }, []);
 
