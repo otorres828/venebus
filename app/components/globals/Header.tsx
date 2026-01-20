@@ -75,9 +75,11 @@ function WizardHeader() {
 
 export default function Header() {
   const { pathname } = useLocation();
-  const isWizard = pathname.startsWith("/pasajeros") || pathname.startsWith("/pagar") || pathname.startsWith("/exito");
+  const isWizard = pathname.startsWith("/pasajeros") || pathname.startsWith("/pagar");
   const isResultados = pathname.startsWith("/resultados") || pathname.startsWith("/viaje");
+  const isPending = pathname.startsWith("/por-confirmar");
   if (isWizard) return <WizardHeader />;
   if (isResultados) return <ResultadosHeader />;
+  if (isPending) return <DefaultHeader />;
   return <DefaultHeader />;
 }

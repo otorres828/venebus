@@ -113,6 +113,14 @@ export default function Exito() {
                 <span className="material-symbols-outlined text-[20px]">share</span>
                 Compartir por WhatsApp
               </button>
+
+              <a
+                href="/"
+                className="flex items-center justify-center gap-3 w-full h-12 bg-gray-100 dark:bg-white/10 text-slate-800 dark:text-white rounded-lg font-bold hover:bg-gray-200 dark:hover:bg-white/20 transition-all"
+              >
+                <span className="material-symbols-outlined text-[20px]">home</span>
+                Ir al inicio
+              </a>
             </div>
           </div>
 

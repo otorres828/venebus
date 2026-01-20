@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useNavigate } from "react-router";
 
 export function meta() {
   return [
@@ -8,6 +9,7 @@ export function meta() {
 }
 
 export default function Checkout() {
+  const navigate = useNavigate();
   const copyValue = useCallback((value: string) => {
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard.writeText(value).catch(() => { });
@@ -95,10 +97,10 @@ export default function Checkout() {
               </div>
             </div>
 
-            <a className="w-full bg-primary hover:bg-primary/90 text-white font-extrabold h-14 rounded-xl text-lg flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95" href="/exito">
+            <div className="w-full bg-primary hover:bg-primary/90 text-white font-extrabold h-14 rounded-xl text-lg flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95" onClick={() => navigate("/por-confirmar")}>
               Confirmar pago
               <span className="material-symbols-outlined">lock</span>
-            </a>
+            </div>
             <div className="flex justify-center items-center gap-4 text-[#637f88] dark:text-gray-500 py-4">
               <div className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-sm">verified</span>

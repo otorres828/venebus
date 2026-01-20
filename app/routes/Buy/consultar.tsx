@@ -1,4 +1,4 @@
-import type { MetaFunction } from "react-router";
+import { useNavigate, type MetaFunction } from "react-router";
 
 export const meta: MetaFunction = () => [
   { title: "VeneBus | Viajes" },
@@ -6,6 +6,7 @@ export const meta: MetaFunction = () => [
 ];
 
 export default function Viajes() {
+  const navigate = useNavigate();
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-background-dark dark:via-background-dark dark:to-background-dark flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-3xl">
@@ -16,7 +17,7 @@ export default function Viajes() {
             Consulte su viaje sin necesidad de hacer login! Basta con introducir los datos a continuación.
           </p>
 
-          <form className="mt-10 space-y-6 text-left">
+          <div className="mt-10 space-y-6 text-left">
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200">Código de reserva</label>
               <input
@@ -37,12 +38,24 @@ export default function Viajes() {
             <div className="pt-2 flex justify-center">
               <button
                 type="submit"
+                onClick={() => navigate("/exito")}
                 className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
+              >
+                Consultar
+              </button>
+            </div>
+
+            <div className="pt-4 text-center space-y-3">
+              <p className="text-sm text-slate-500 dark:text-slate-400">O si ya tienes una cuenta</p>
+              <button
+                type="button"
+                onClick={() => navigate("/iniciar-sesion")}
+                className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-800 dark:text-white font-bold shadow-sm hover:bg-slate-200 dark:hover:bg-white/20 transition-all"
               >
                 Acceder a mi cuenta
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </main>
