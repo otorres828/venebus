@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
   const hideFooter = pathname === "/iniciar-sesion" || pathname === "/registrarse";
   return (
-    <html lang="en">
+    <html lang="es">
       <head suppressHydrationWarning={true}>
         <meta charSet="utf-8" />
         <meta
