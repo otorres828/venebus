@@ -46,7 +46,6 @@ export async function fetchOrigenes(query: string): Promise<string[]> {
 }
 
 export async function fetchDestinos(origen: string, query: string): Promise<string[]> {
-  await delay(200);
   const base = DESTINOS_BY_ORIGEN[origen] ?? CIUDADES;
   const q = query.trim().toLowerCase();
   return base.filter((c) => c.toLowerCase().includes(q)).slice(0, 8);

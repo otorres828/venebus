@@ -6,33 +6,42 @@ type AutocompleteInputProps = {
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;
-  onFetchSuggestions: (query: string) => Promise<string[]>;
+  onFetchSuggestions?: (query: string) => Promise<string[]>;
+  suggestions?: string[];
   onSelected?: (value: string) => void;
   minQueryLength?: number;
   enableDropdown?: boolean;
   hasError?: boolean;
 };
 
-export function AutocompleteInput({ label, id, placeholder, value, onChange, onFetchSuggestions, onSelected, minQueryLength = 0, enableDropdown = true, hasError = false }: AutocompleteInputProps) {
+export function AutocompleteInput({ label, id, placeholder, value, onChange, onFetchSuggestions, suggestions, onSelected, minQueryLength = 0, enableDropdown = true, hasError = false }: AutocompleteInputProps) {
   const [open, setOpen] = useState(false);
   const [filtered, setFiltered] = useState<string[]>([]);
   const [highlight, setHighlight] = useState(-1);
   const containerRef = useRef<HTMLLabelElement | null>(null);
 
   useEffect(() => {
+    const q = value.trim();
+    if (!enableDropdown || q.length < minQueryLength) {
+      setFiltered([]);
+      return undefined;
+    }
+
+    // If suggestions are provided externally, just use them
+    if (Array.isArray(suggestions)) {
+      setFiltered(suggestions);
+      return undefined;
+    }
+
     const fetchSuggestions = async () => {
-      const q = value.trim();
-      if (!enableDropdown || q.length < minQueryLength) {
-        setFiltered([]);
-        return;
-      }
+      if (!onFetchSuggestions) return;
       const list = await onFetchSuggestions(q);
       setFiltered(list);
     };
 
     const fetchTimer = setTimeout(fetchSuggestions, 200);
     return () => clearTimeout(fetchTimer);
-  }, [value, onFetchSuggestions, enableDropdown, minQueryLength]);
+  }, [value, onFetchSuggestions, enableDropdown, minQueryLength, suggestions]);
 
   useEffect(() => {
     const onClickOutside = (e: MouseEvent) => {
