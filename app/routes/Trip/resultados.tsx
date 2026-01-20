@@ -361,7 +361,7 @@ export default function Resultados() {
               <button
                 type="button"
                 onClick={() => changeSort("temprano")}
-                className={`px-3 py-2.5 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${sort === "temprano" ? "bg-cyan-500/20 text-primary border" : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
+                className={`px-2 py-2.5 text-sm font-semibold rounded-lg transition-colors cursor-pointer ${sort === "temprano" ? "bg-cyan-500/20 text-primary border" : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"}`}
               >
                 Más Temprano
               </button>
