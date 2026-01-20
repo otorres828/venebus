@@ -425,7 +425,8 @@ export default function Resultados() {
                   </div>
 
                   <div className="flex-1 min-w-[220px] w-full flex flex-col gap-4">
-                    <div className={`flex items-start justify-between gap-4 ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
+                    {/* Mobile: origen y destino en la misma fila */}
+                    <div className={`flex items-start justify-between gap-4 sm:hidden ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
                       <div className="text-left">
                         <div className="font-heading text-2xl font-bold leading-none">{trip.originTime}</div>
                         <div className="text-xs font-bold text-gray-400 mt-1 uppercase tracking-tighter">{trip.originLabel}</div>
@@ -435,7 +436,36 @@ export default function Resultados() {
                         <div className="text-xs font-bold text-gray-400 dark:text-gray-500 mt-1 uppercase tracking-tighter">{trip.destinationLabel}</div>
                       </div>
                     </div>
-                    <div className="flex-1 px-1 sm:px-4 flex flex-col items-center">
+
+                    {/* Desktop: origen | duración | destino */}
+                    <div className={`hidden sm:flex flex-1 flex-row sm:items-center justify-between gap-4 ${trip.soldOut ? "text-gray-400 dark:text-gray-500" : ""}`}>
+                      <div className="text-left">
+                        <div className="font-heading text-2xl font-bold leading-none">{trip.originTime}</div>
+                        <div className="text-xs font-bold text-gray-400 mt-1 uppercase tracking-tighter">{trip.originLabel}</div>
+                      </div>
+                      <div className="flex-1 px-4 flex flex-col items-center">
+                        <div className={`text-[10px] font-bold ${trip.soldOut ? "text-gray-300 dark:text-gray-500" : "text-gray-400 dark:text-gray-500"} uppercase tracking-widest mb-2`}>{trip.duration}</div>
+                        <div className="relative w-full h-px bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                          <div className={`absolute size-2 rounded-full ${trip.soldOut ? "bg-gray-200 dark:bg-gray-700" : "bg-gray-300 dark:bg-gray-600"} left-0`}></div>
+                          <div className={`absolute size-2 rounded-full ${trip.soldOut ? "bg-gray-200 dark:bg-gray-700" : "bg-cyan-500"} right-0`}></div>
+                          <span className={`material-symbols-outlined ${trip.soldOut ? "text-gray-200" : "text-primary"} bg-white dark:bg-background-dark px-1 text-base`}>chevron_right</span>
+                        </div>
+                        <div className="flex gap-3 mt-3">
+                          {trip.amenities.map((amenity) => (
+                            <span key={amenity} className={`material-symbols-outlined text-lg ${trip.soldOut ? "text-gray-300" : "text-gray-300 hover:text-primary transition-colors cursor-help"}`} title={amenity}>
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-heading text-2xl font-bold leading-none">{trip.destinationTime}</div>
+                        <div className="text-xs font-bold text-gray-400 dark:text-gray-500 mt-1 uppercase tracking-tighter">{trip.destinationLabel}</div>
+                      </div>
+                    </div>
+
+                    {/* Mobile duration + amenities */}
+                    <div className="sm:hidden flex-1 px-1 flex flex-col items-center">
                       <div className={`text-[10px] font-bold ${trip.soldOut ? "text-gray-300 dark:text-gray-500" : "text-gray-400 dark:text-gray-500"} uppercase tracking-widest mb-2`}>{trip.duration}</div>
                       <div className="relative w-full h-px bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                         <div className={`absolute size-2 rounded-full ${trip.soldOut ? "bg-gray-200 dark:bg-gray-700" : "bg-gray-300 dark:bg-gray-600"} left-0`}></div>
