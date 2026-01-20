@@ -1,7 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { Amenidad, loadLeaflet } from "@lib/detail-trip";
+import "leaflet/dist/leaflet.css";
+import { Amenidad, ensureLeafletIcons } from "@lib/detail-trip";
 import type { Route } from "./+types/viaje-detalle";
+
+const routeCoords: [number, number][] = [
+  [10.4806, -66.9036], // Caracas
+  [10.0932, -67.8683], // Valencia
+];
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -14,9 +20,16 @@ export default function ViajeDetalle() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const mapRef = useRef<HTMLDivElement | null>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const mapInitRef = useRef(false);
+  const [isClient, setIsClient] = useState(false);
+  const [leafletLib, setLeafletLib] = useState<typeof import("leaflet") | null>(null);
+  const [mapComponents, setMapComponents] = useState<{
+    MapContainer: any;
+    TileLayer: any;
+    Marker: any;
+    Popup: any;
+    Polyline: any;
+    useMap: any;
+  } | null>(null);
   const travelDateLabel = new Intl.DateTimeFormat("es-VE", {
     day: "2-digit",
     month: "short",
@@ -24,47 +37,40 @@ export default function ViajeDetalle() {
   }).format(new Date());
 
   useEffect(() => {
-    if (typeof window === "undefined" || !mapRef.current) return;
-    // Evita inicializaciones múltiples en modo estricto de React (dev)
-    if (mapInstanceRef.current || mapInitRef.current) return;
-    mapInitRef.current = true;
-
-    const routeCoords: [number, number][] = [
-      [10.4806, -66.9036], // Caracas
-      [10.0932, -67.8683], // Valencia
-    ];
-
-    const initMap = async () => {
-      const L = await loadLeaflet();
-      const map = L.map(mapRef.current as HTMLElement, {
-        zoomControl: false,
-      });
-      mapInstanceRef.current = map;
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "© OpenStreetMap",
-      }).addTo(map);
-
-      const polyline = L.polyline(routeCoords, { color: "#17a1cf", weight: 5, opacity: 0.9 }).addTo(map);
-      L.marker(routeCoords[0]).addTo(map).bindPopup("Origen: Terminal Oriente");
-      L.marker(routeCoords[1]).addTo(map).bindPopup("Destino: Big Low Center");
-
-      map.fitBounds(polyline.getBounds(), { padding: [20, 20] });
-    };
-
-    initMap().finally(() => {
-      mapInitRef.current = false;
-    });
-
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-      mapInitRef.current = false;
-    };
+    setIsClient(true);
+    ensureLeafletIcons();
+    import("leaflet").then((mod) => setLeafletLib(mod));
+    import("react-leaflet").then((mod) =>
+      setMapComponents({
+        MapContainer: mod.MapContainer,
+        TileLayer: mod.TileLayer,
+        Marker: mod.Marker,
+        Popup: mod.Popup,
+        Polyline: mod.Polyline,
+        useMap: mod.useMap,
+      })
+    );
   }, []);
+
+  const DynamicFitBounds = ({
+    positions,
+    useMapHook,
+    leafletLib: leaflet,
+  }: {
+    positions: [number, number][];
+    useMapHook: any;
+    leafletLib: typeof import("leaflet");
+  }) => {
+    const map = useMapHook();
+
+    useEffect(() => {
+      if (!positions.length) return;
+      const bounds = leaflet.latLngBounds(positions);
+      map.fitBounds(bounds, { padding: [20, 20] });
+    }, [map, positions, leaflet]);
+
+    return null;
+  };
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 text-slate-800 dark:text-slate-200">
@@ -80,12 +86,35 @@ export default function ViajeDetalle() {
             <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
               <h2 className="font-semibold flex items-center gap-2">
                 <span className="material-icons text-primary">map</span>
-                Ruta Sugerida
+                Ruta
               </h2>
               <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Vía Autopista Regional del Centro</span>
             </div>
             <div className="z-0 h-80 w-full relative bg-slate-100 dark:bg-slate-900">
-              <div ref={mapRef} className="absolute inset-0" aria-label="Mapa de la ruta"></div>
+              {isClient && mapComponents && leafletLib ? (
+                <mapComponents.MapContainer
+                  center={routeCoords[0]}
+                  zoom={7}
+                  scrollWheelZoom={false}
+                  zoomControl={false}
+                  className="absolute inset-0"
+                >
+                  <mapComponents.TileLayer
+                    attribution="© OpenStreetMap"
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <mapComponents.Polyline positions={routeCoords} pathOptions={{ color: "#17a1cf", weight: 5, opacity: 0.9 }} />
+                  <mapComponents.Marker position={routeCoords[0]}>
+                    <mapComponents.Popup>Origen: Terminal Oriente</mapComponents.Popup>
+                  </mapComponents.Marker>
+                  <mapComponents.Marker position={routeCoords[1]}>
+                    <mapComponents.Popup>Destino: Big Low Center</mapComponents.Popup>
+                  </mapComponents.Marker>
+                  <DynamicFitBounds useMapHook={mapComponents.useMap} leafletLib={leafletLib} positions={routeCoords} />
+                </mapComponents.MapContainer>
+              ) : (
+                <div className="absolute inset-0 animate-pulse bg-slate-100 dark:bg-slate-900" aria-hidden="true"></div>
+              )}
             </div>
           </div>
 
