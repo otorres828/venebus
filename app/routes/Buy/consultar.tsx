@@ -39,7 +39,7 @@ export default function Viajes() {
               <button
                 type="submit"
                 onClick={() => navigate("/exito")}
-                className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
+                className="inline-flex items-center justify-center px-8 py-3 rounded-xl bg-cyan-500 text-white font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all"
               >
                 Consultar
               </button>
