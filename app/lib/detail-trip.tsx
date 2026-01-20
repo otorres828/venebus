@@ -1,6 +1,6 @@
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
+const markerIcon2x = new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).toString();
+const markerIcon = new URL("leaflet/dist/images/marker-icon.png", import.meta.url).toString();
+const markerShadow = new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).toString();
 
 export type AmenidadProps = { icon: string; label: string };
 
@@ -14,13 +14,17 @@ export function Amenidad({ icon, label }: AmenidadProps) {
 }
 
 let leafletIconsReady = false;
-export async function ensureLeafletIcons() {
+export function ensureLeafletIcons() {
   if (leafletIconsReady || typeof window === "undefined") return;
-  const L = await import("leaflet");
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: markerIcon2x,
-    iconUrl: markerIcon,
-    shadowUrl: markerShadow,
+  // Dynamic import to avoid SSR issues while keeping URLs resolved by Vite.
+  import("leaflet").then((L) => {
+    // Prevent default imagePath prefixing which can duplicate URLs under Vite.
+    (L.Icon.Default as any).imagePath = "";
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: markerIcon2x,
+      iconUrl: markerIcon,
+      shadowUrl: markerShadow,
+    });
+    leafletIconsReady = true;
   });
-  leafletIconsReady = true;
 }
