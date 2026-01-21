@@ -611,7 +611,7 @@ export default function Resultados() {
                     </div>
                     {!trip.soldOut ? (
                       <Link
-                        to={`/viaje-detalle?id=${encodeURIComponent(trip.id)}&${searchParams.toString()}`}
+                        to={`/viaje?id=${encodeURIComponent(trip.id)}&${searchParams.toString()}`}
                         className="bg-cyan-500 hover:bg-cyan-500/90 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md group-hover:shadow-primary/30 w-full sm:w-auto max-w-[240px] mx-auto sm:mx-0 text-center"
                         aria-label={`Ver detalle del viaje ${trip.operator}`}
                       >
