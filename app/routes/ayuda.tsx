@@ -1,4 +1,6 @@
 import type { MetaFunction } from "react-router";
+import { Link } from "react-router";
+import { useState } from "react";
 
 export const meta: MetaFunction = () => [
     { title: "VeneBus | Ayuda" },
@@ -6,6 +8,36 @@ export const meta: MetaFunction = () => [
 ];
 
 export default function Ayuda() {
+    // Preguntas frecuentes y contenido dummy
+    const faqs = [
+        {
+            question: "¿Cómo descargo mi boleto digital?",
+            dummy: "Contenido dummy para descargar boleto digital.",
+        },
+        {
+            question: "¿Con cuánta antelación debo estar en el terminal?",
+            dummy: "Contenido dummy para antelación en el terminal.",
+        },
+        {
+            question: "¿Puedo pagar con bolívares en efectivo?",
+            dummy: "Contenido dummy para pago en efectivo.",
+        },
+        {
+            question: "¿Cuál es el peso máximo permitido de equipaje?",
+            dummy: "Contenido dummy para peso máximo de equipaje.",
+        },
+        {
+            question: "¿Ofrecen descuentos para adultos mayores?",
+            dummy: "Contenido dummy para descuentos adultos mayores.",
+        },
+        {
+            question: "¿Cómo recupero mi contraseña?",
+            dummy: "Contenido dummy para recuperación de contraseña.",
+        },
+    ];
+
+    const [openFaq, setOpenFaq] = useState<number | null>(null);
+
     return (
         <main className="max-w-[1200px] mx-auto px-6 py-12">
             {/* Hero Section */}
@@ -40,108 +72,127 @@ export default function Ayuda() {
                 <h2 className="text-[#111618] dark:text-white text-[24px] font-bold leading-tight tracking-[-0.015em]">
                     Explora por categorías
                 </h2>
-                <a className="text-primary font-semibold text-sm hover:underline" href="#">
+                <Link to="categorias" className="text-primary font-semibold text-sm hover:underline">
                     Ver todos los temas
-                </a>
+                </Link>
             </div>
 
             {/* Image Grid Component (Categories) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                <div className="flex flex-col gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-50 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group">
-                    <div
-                        className="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-lg overflow-hidden relative"
-                        data-alt="Digital payment methods and mobile phone screen"
-                        style={{
-                            backgroundImage:
-                                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3WQv0jbYV000mlKSMZmBY0IOZGYfY4UeTO69vpns9yGFKEsULF9jxzg4kx0qsgG2Oj-deD82PJw2lXsXqrAUj3U4Pqk0BzrQTSO_v9BRhb6dKCN60YFuALDmMP_Zqu0sGNqzRnUozeHLNc9sBN3_sewwGO3EnlF7utBbcNKIe-x1pLL8v4mycHD_w5ZHMj8r3RZue5Y0CysMiSfV5BuJaV8ggBlFVcOpemHRDVFAd41AFjZyagU7nd7aOWSNpNYlwlheWufL7YA')",
-                        }}
-                    >
-                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
-                    </div>
-                    <div>
-                        <h3 className="text-[#111618] dark:text-white text-lg font-bold leading-tight mb-2">Pagos y Pago Móvil</h3>
-                        <p className="text-[#637f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
-                            Configura tu Pago Móvil, transferencias Zelle y métodos locales.
-                        </p>
-                    </div>
+            <Link
+                to="categoria"
+                className="flex flex-col gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-50 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group"
+            >
+                <div
+                className="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-lg overflow-hidden relative"
+                data-alt="Digital payment methods and mobile phone screen"
+                style={{
+                    backgroundImage:
+                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3WQv0jbYV000mlKSMZmBY0IOZGYfY4UeTO69vpns9yGFKEsULF9jxzg4kx0qsgG2Oj-deD82PJw2lXsXqrAUj3U4Pqk0BzrQTSO_v9BRhb6dKCN60YFuALDmMP_Zqu0sGNqzRnUozeHLNc9sBN3_sewwGO3EnlF7utBbcNKIe-x1pLL8v4mycHD_w5ZHMj8r3RZue5Y0CysMiSfV5BuJaV8ggBlFVcOpemHRDVFAd41AFjZyagU7nd7aOWSNpNYlwlheWufL7YA')",
+                }}
+                >
+                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
                 </div>
+                <div>
+                <h3 className="text-[#111618] dark:text-white text-lg font-bold leading-tight mb-2">Pagos y Pago Móvil</h3>
+                <p className="text-[#637f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
+                    Configura tu Pago Móvil, transferencias Zelle y métodos locales.
+                </p>
+                </div>
+            </Link>
 
-                <div className="flex flex-col gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-50 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group">
-                    <div
-                        className="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-lg overflow-hidden relative"
-                        data-alt="Person looking frustrated at a screen for refund"
-                        style={{
-                            backgroundImage:
-                                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgH9PbWsKCP5ZnaPK6gAG5hTzk1unZphjtgbiGfWnwnL75dLjHD63jo8Q9ufgdf3iaByu0Pq03uuWf7OvaBeVIJfNHQ3KvFyQk_gCesthvwwvhKDqG7W490SBU9gRsnwArUEdSAvFSY4XZfoJDkxuNQ4E1iC5vWkr9wl3YoXnANB_5PB76ByOVh37WswupYW-T-KODCg6lRrCwHSOqvVyjDE9vZEi5q1L7uE5OU5jD9L646fdH089DC_tmob9Y5nBFO_mTi2HTtA')",
-                        }}
-                    >
-                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
-                    </div>
-                    <div>
-                        <h3 className="text-[#111618] dark:text-white text-lg font-bold leading-tight mb-2">Cambios y Reembolsos</h3>
-                        <p className="text-[#637f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
-                            Cómo solicitar devoluciones o cambiar la fecha de tu viaje.
-                        </p>
-                    </div>
+            <Link
+                to="categoria"
+                className="flex flex-col gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-50 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group"
+            >
+                <div
+                className="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-lg overflow-hidden relative"
+                data-alt="Person looking frustrated at a screen for refund"
+                style={{
+                    backgroundImage:
+                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgH9PbWsKCP5ZnaPK6gAG5hTzk1unZphjtgbiGfWnwnL75dLjHD63jo8Q9ufgdf3iaByu0Pq03uuWf7OvaBeVIJfNHQ3KvFyQk_gCesthvwwvhKDqG7W490SBU9gRsnwArUEdSAvFSY4XZfoJDkxuNQ4E1iC5vWkr9wl3YoXnANB_5PB76ByOVh37WswupYW-T-KODCg6lRrCwHSOqvVyjDE9vZEi5q1L7uE5OU5jD9L646fdH089DC_tmob9Y5nBFO_mTi2HTtA')",
+                }}
+                >
+                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
                 </div>
+                <div>
+                <h3 className="text-[#111618] dark:text-white text-lg font-bold leading-tight mb-2">Cambios y Reembolsos</h3>
+                <p className="text-[#637f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
+                    Cómo solicitar devoluciones o cambiar la fecha de tu viaje.
+                </p>
+                </div>
+            </Link>
 
-                <div className="flex flex-col gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-50 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group">
-                    <div
-                        className="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-lg overflow-hidden relative"
-                        data-alt="Modern bus interior and travel documents"
-                        style={{
-                            backgroundImage:
-                                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCpBfhqqdz2Df5muNL_gGZqtCirpq1xStzikNoLa_LmICf0WLvcWY_2C0PQo_Re74RBN188Sxji-J8qsL7D5fEqhFmi6eW2RuF1sYXlSc8HE-9MkBawG4uq0eyUjCgR9ueewm-yXE6oqAgITvYyIIhRY3wUYha1fK9Xt8-lVG_cEcrMzByTrXNUI80yHxMz4zxdvexAWC0W9CGWsc25940Nw2C546759fZbCBFidkCR4LV00SgoCaWCMqXDxB7_eEIWbCWhJBcLxg')",
-                        }}
-                    >
-                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
-                    </div>
-                    <div>
-                        <h3 className="text-[#111618] dark:text-white text-lg font-bold leading-tight mb-2">Requisitos de Viaje</h3>
-                        <p className="text-[#637f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
-                            Documentación (Cédula/Pasaporte) y políticas de equipaje.
-                        </p>
-                    </div>
+            <Link
+                to="categoria"
+                className="flex flex-col gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-50 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group"
+            >
+                <div
+                className="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-lg overflow-hidden relative"
+                data-alt="Modern bus interior and travel documents"
+                style={{
+                    backgroundImage:
+                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCpBfhqqdz2Df5muNL_gGZqtCirpq1xStzikNoLa_LmICf0WLvcWY_2C0PQo_Re74RBN188Sxji-J8qsL7D5fEqhFmi6eW2RuF1sYXlSc8HE-9MkBawG4uq0eyUjCgR9ueewm-yXE6oqAgITvYyIIhRY3wUYha1fK9Xt8-lVG_cEcrMzByTrXNUI80yHxMz4zxdvexAWC0W9CGWsc25940Nw2C546759fZbCBFidkCR4LV00SgoCaWCMqXDxB7_eEIWbCWhJBcLxg')",
+                }}
+                >
+                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
                 </div>
+                <div>
+                <h3 className="text-[#111618] dark:text-white text-lg font-bold leading-tight mb-2">Requisitos de Viaje</h3>
+                <p className="text-[#637f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
+                    Documentación (Cédula/Pasaporte) y políticas de equipaje.
+                </p>
+                </div>
+            </Link>
 
-                <div className="flex flex-col gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-50 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group">
-                    <div
-                        className="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-lg overflow-hidden relative"
-                        data-alt="Abstract customer support and account icons"
-                        style={{
-                            backgroundImage:
-                                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvXRSaMKJIGRDEWvBLLLmfaUuBd9mdRChUb_OgwlJK29GZSSdTRfF2k9idIHVGb7oXn5KNIbazt_VdB2l4h3_uEZFHt7cqcptqG1z4Rs3rNoArnidVqTk7AAC7yBBNHK9bAxyGNSQ6KTKzkf5Ev8MmFZnLFvuSmY1569so8hP2wXnrfMUtqjyg0_d72HsnSr6_d8-FDsUfPsTnmpUR-N9GqClFVaVi90HKGbY-dahRvM3QCMzx0HC9-b1XbUwY_GVt0ijKFNjxtA')",
-                        }}
-                    >
-                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
-                    </div>
-                    <div>
-                        <h3 className="text-[#111618] dark:text-white text-lg font-bold leading-tight mb-2">Mi Cuenta y Perfil</h3>
-                        <p className="text-[#637f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
-                            Gestiona tus datos personales y revisa tu historial de boletos.
-                        </p>
-                    </div>
+            <Link
+                to="categoria"
+                className="flex flex-col gap-4 p-5 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-50 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group"
+            >
+                <div
+                className="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-lg overflow-hidden relative"
+                data-alt="Abstract customer support and account icons"
+                style={{
+                    backgroundImage:
+                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvXRSaMKJIGRDEWvBLLLmfaUuBd9mdRChUb_OgwlJK29GZSSdTRfF2k9idIHVGb7oXn5KNIbazt_VdB2l4h3_uEZFHt7cqcptqG1z4Rs3rNoArnidVqTk7AAC7yBBNHK9bAxyGNSQ6KTKzkf5Ev8MmFZnLFvuSmY1569so8hP2wXnrfMUtqjyg0_d72HsnSr6_d8-FDsUfPsTnmpUR-N9GqClFVaVi90HKGbY-dahRvM3QCMzx0HC9-b1XbUwY_GVt0ijKFNjxtA')",
+                }}
+                >
+                <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
                 </div>
+                <div>
+                <h3 className="text-[#111618] dark:text-white text-lg font-bold leading-tight mb-2">Mi Cuenta y Perfil</h3>
+                <p className="text-[#637f88] dark:text-gray-400 text-sm font-normal leading-relaxed">
+                    Gestiona tus datos personales y revisa tu historial de boletos.
+                </p>
+                </div>
+            </Link>
             </div>
 
             {/* FAQ Section */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm">
                 <h2 className="text-[#111618] dark:text-white text-2xl font-bold mb-8">Preguntas Frecuentes Populares</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-                    {[
-                        "¿Cómo descargo mi boleto digital?",
-                        "¿Con cuánta antelación debo estar en el terminal?",
-                        "¿Puedo pagar con bolívares en efectivo?",
-                        "¿Cuál es el peso máximo permitido de equipaje?",
-                        "¿Ofrecen descuentos para adultos mayores?",
-                        "¿Cómo recupero mi contraseña?",
-                    ].map((question) => (
+                    {faqs.map((faq, idx) => (
                         <div
-                            key={question}
-                            className="flex items-center justify-between py-4 border-b border-gray-50 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 px-2 rounded-lg transition-colors"
+                            key={faq.question}
+                            className={`flex flex-col py-4 border-b border-gray-50 dark:border-gray-700 cursor-pointer px-2 rounded-lg transition-colors
+                                ${openFaq === idx ? "bg-gray-50 dark:bg-gray-700" : "hover:bg-gray-50 dark:hover:bg-gray-700"}`}
+                            onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={openFaq === idx}
                         >
-                            <span className="text-[#111618] dark:text-gray-200 font-medium">{question}</span>
-                            <span className="material-symbols-outlined text-primary">chevron_right</span>
+                            <div className="flex items-center justify-between">
+                                <span className="text-[#111618] dark:text-gray-200 font-medium">{faq.question}</span>
+                                <span className={`material-symbols-outlined text-primary transition-transform ${openFaq === idx ? "rotate-90" : ""}`}>
+                                    chevron_right
+                                </span>
+                            </div>
+                            {openFaq === idx && (
+                                <div className="mt-3 text-sm text-gray-700 dark:text-gray-300 border-t pt-3">
+                                    {faq.dummy}
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -201,7 +252,6 @@ export default function Ayuda() {
         </main>
     );
 }
-
 
 // Render a lightweight placeholder on the server; hydrate full UI on client
 export function HydrateFallback() {

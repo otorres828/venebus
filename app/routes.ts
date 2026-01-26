@@ -12,6 +12,12 @@ export default [
 	route("iniciar-sesion", "routes/Auth/login.tsx"),
 	route("registrarse", "routes/Auth/registro.tsx"),
 	route("promociones", "routes/Promociones/page.tsx"),
+
+
 	route("ayuda", "routes/ayuda.tsx"),
+	route("ayuda/categorias", "routes/Help/categorias.tsx"),
+	route("ayuda/categoria", "routes/Help/detalle-categoria.tsx"),
+	route("ayuda/articulo/:id", "routes/Help/articulo.$id.tsx"),
 	route("ayuda2", "routes/ayuda2.tsx"),
+
 ] satisfies RouteConfig;

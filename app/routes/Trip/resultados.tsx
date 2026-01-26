@@ -1,4 +1,4 @@
-import { useNavigate, useLoaderData, useSearchParams, useNavigation, Link } from "react-router";
+import {  useLoaderData, useSearchParams, useNavigation, Link } from "react-router";
 import { useEffect, useState } from "react";
 import { resultadosLoader, parseTypes } from "@lib/trip";
 import type { SortKey, SlotFilter } from "@lib/trip";
@@ -19,7 +19,6 @@ export function meta({ data }: Route.MetaArgs) {
 
 export default function Resultados() {
 
-  const navigate = useNavigate();
   const navigation = useNavigation();
   const { trips, fecha: loaderFecha, today: loaderToday } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
