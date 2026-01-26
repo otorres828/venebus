@@ -74,15 +74,15 @@ function DefaultHeader() {
             <span className="material-symbols-outlined text-2xl">help</span>
             Ayuda
           </Link>
-            <Link
-                to="/iniciar-sesion"
-                    className={`flex flex-col items-center text-xs font-medium ${
-                        pathname.startsWith("/iniciar-sesion") ? "text-primary font-bold" : "text-gray-500"
-                    } hover:text-primary`}
-                    aria-label="Ir a perfil"
-                >
-                    <span className="material-symbols-outlined text-2xl">person</span>
-                    Perfil
+          <Link
+              to="/iniciar-sesion"
+                className={`flex flex-col items-center text-xs font-medium ${
+                    pathname.startsWith("/iniciar-sesion") ? "text-primary font-bold" : "text-gray-500"
+                } hover:text-primary`}
+                aria-label="Ir a perfil"
+            >
+              <span className="material-symbols-outlined text-2xl">person</span>
+              Perfil
             </Link>
         </nav>
       )}
