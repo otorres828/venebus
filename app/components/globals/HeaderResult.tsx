@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router";
 import { useState } from "react";
 import Busqueda from "@components/Busqueda";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 export function ResultadosHeader() {
 
@@ -24,6 +24,8 @@ export function ResultadosHeader() {
         const monthCap = month.charAt(0).toUpperCase() + month.slice(1);
         return `${day} ${monthCap}`;
     })();
+
+    const { pathname } = useLocation();
 
     return (
         <>
@@ -78,23 +80,53 @@ export function ResultadosHeader() {
             </header>
             {/* Menú móvil fijo abajo */}
             <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-background-dark border-t border-gray-100 dark:border-gray-700 flex justify-around items-center h-16 lg:hidden">
-                <Link to="/" className="flex flex-col items-center text-xs font-medium text-gray-500 hover:text-primary">
+                <Link
+                    to="/"
+                    className={`flex flex-col items-center text-xs font-medium ${
+                        pathname === "/" ? "text-primary font-bold" : "text-gray-500"
+                    } hover:text-primary`}
+                    aria-label="Ir a inicio"
+                >
                     <span className="material-symbols-outlined text-2xl">home</span>
                     Inicio
                 </Link>
-                <Link to="/consultar-viaje" className="flex flex-col items-center text-xs font-medium text-gray-500 hover:text-primary">
+                <Link
+                    to="/consultar-viaje"
+                    className={`flex flex-col items-center text-xs font-medium ${
+                        pathname.startsWith("/consultar-viaje") ? "text-primary font-bold" : "text-gray-500"
+                    } hover:text-primary`}
+                    aria-label="Ir a viajes"
+                >
                     <span className="material-symbols-outlined text-2xl">search</span>
                     Viajes
                 </Link>
-                <Link to="/promociones" className="flex flex-col items-center text-xs font-medium text-gray-500 hover:text-primary">
+                <Link
+                    to="/promociones"
+                    className={`flex flex-col items-center text-xs font-medium ${
+                        pathname.startsWith("/promociones") ? "text-primary font-bold" : "text-gray-500"
+                    } hover:text-primary`}
+                    aria-label="Ir a promos"
+                >
                     <span className="material-symbols-outlined text-2xl">local_offer</span>
                     Promos
                 </Link>
-                <Link to="/ayuda" className="flex flex-col items-center text-xs font-medium text-gray-500 hover:text-primary">
+                <Link
+                    to="/ayuda"
+                    className={`flex flex-col items-center text-xs font-medium ${
+                        pathname.startsWith("/ayuda") ? "text-primary font-bold" : "text-gray-500"
+                    } hover:text-primary`}
+                    aria-label="Ir a ayuda"
+                >
                     <span className="material-symbols-outlined text-2xl">help</span>
                     Ayuda
                 </Link>
-                <Link to="/iniciar-sesion" className="flex flex-col items-center text-xs font-medium text-gray-500 hover:text-primary">
+                <Link
+                    to="/iniciar-sesion"
+                    className={`flex flex-col items-center text-xs font-medium ${
+                        pathname.startsWith("/iniciar-sesion") ? "text-primary font-bold" : "text-gray-500"
+                    } hover:text-primary`}
+                    aria-label="Ir a perfil"
+                >
                     <span className="material-symbols-outlined text-2xl">person</span>
                     Perfil
                 </Link>
